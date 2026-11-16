@@ -1,0 +1,64 @@
+# 本地 Python 与构建产物
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+.venv-*/
+venv/
+env/
+build/
+dist/
+wheelhouse/
+.deps/
+.runtime/
+runs/
+
+# 本机配置、密钥与运行日志
+.env
+.env.*
+!.env.example
+*.log
+*.tlog
+*.ulg
+*.bag
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# 解压后的视觉权重
+models/vision/*.pt
+models/vision/*.onnx
+models/vision/*.engine
+
+# 官方竞赛规则原件不随代码仓库再分发
+docs/rules/*.pdf
+
+# 编辑器与操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# 本地设备信息、媒体与敏感文件
+.private/
+*.local.yaml
+*.local.yml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+eeprom.bin
+*.mp4
+*.mov
+*.bin
+core
+core.*

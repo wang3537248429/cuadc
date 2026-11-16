@@ -1,0 +1,30 @@
+{
+  "field_layout": {
+    "group_centers_ne": null,
+    "origin_lat_deg": -35.363261,
+    "origin_lon_deg": 149.16523,
+    "origin_alt_m": 46.0,
+    "runway_center_north_m": 25.408673773482732,
+    "runway_center_east_m": 21.011573494301487,
+    "runway_heading_deg": 207.87825793155227,
+    "runway_length_m": 145.0,
+    "runway_width_m": 72.0,
+    "target_center_north_m": 177.88019732579224,
+    "target_center_east_m": 109.95725318653061,
+    "target_heading_deg": 31.733350992599348,
+    "initial_heading_deg": 186.72047020047452,
+    "field_size_m": 700,
+    "route_max_distance_m": 253.91013841113067
+  },
+  "group_centers_ne": {
+    "A": [
+      177.88019732579224,
+      109.95725318653061
+    ],
+    "B": [
+      -127.06284977882677,
+      -67.93410619792763
+    ]
+  },
+  "layout_seed": 2025
+}

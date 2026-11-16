@@ -1,0 +1,52 @@
+{
+  "recorded_at_utc": "2026-11-16T12:55:57+00:00",
+  "scope": "目录整理、公开源码、安装与隐私检查；本轮未执行完整飞行或实机验收",
+  "environment": {
+    "os": "Ubuntu 22.04 amd64",
+    "python": "3.10.12",
+    "gazebo": "Garden 7.9.0",
+    "ros": "Humble"
+  },
+  "local_workspace_tests": {
+    "tests": 323,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 323
+  },
+  "clean_export_fresh_venv_tests": {
+    "tests": 323,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 20,
+    "passed": 303
+  },
+  "clean_export_installation": {
+    "fresh_venv": true,
+    "source_modules_loaded_from_export": true,
+    "torch_installed": false,
+    "ultralytics_installed": false
+  },
+  "optional_test_scope": "20 项跳过仅涉及未分发的靶标素材和训练数据完整性；不作为视觉识别通过",
+  "checks": {
+    "shell_syntax": true,
+    "sdf_format": true,
+    "upstream_assets": true,
+    "local_runtime_resources": true,
+    "public_privacy_findings": 0,
+    "required_resources_rejected_when_absent": true,
+    "documentation_links": true,
+    "documentation_embedded_images": 0
+  },
+  "route_migration": {
+    "origin": "public ArduPilot SITL origin",
+    "commands_preserved": true,
+    "relative_altitudes_preserved": true,
+    "original_coordinates_distributed": false,
+    "max_local_geometry_difference_upper_bound_m": 1e-05
+  },
+  "full_flight_validation_performed": false,
+  "hardware_validation_performed": false,
+  "restricted_resources_distributed": false,
+  "external_publication_performed": false
+}

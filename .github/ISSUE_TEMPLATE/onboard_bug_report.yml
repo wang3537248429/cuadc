@@ -1,0 +1,24 @@
+name: 机载程序缺陷
+description: 报告已脱敏的机载程序问题
+title: "[ONBOARD] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: 禁止提交真实坐标、凭据、设备序列号、未脱敏 TLOG 或相机原片。安全问题请走私密漏洞报告。
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题与安全影响
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 已脱敏复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: fallback
+    attributes:
+      label: 缓解或回退方式

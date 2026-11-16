@@ -1,0 +1,3 @@
+fd7d95b51e247b9e647df7b597970868a9ff63fe73a6824e6b38113cf61fbccb  models/vision/task1_v4m_best.pt.gz
+981c3d1ba48d48c7858ae909929059178f327f765f792207eace7e4bc6000372  models/vision/task2_sim_digits_v1.pt.gz
+acf6f70cbb3276f9418b14cde65da4ca1e1e379c15f106520a60f41600d890e8  models/vision/yolov8n_pretraining.pt.gz

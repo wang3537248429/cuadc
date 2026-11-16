@@ -1,0 +1,94 @@
+# CUADC 3.2 m conventional twin fixed wing
+SERVO1_FUNCTION  4
+SERVO2_FUNCTION  19
+SERVO3_FUNCTION  70
+SERVO4_FUNCTION  21
+SERVO8_FUNCTION  0
+SERVO8_MIN       1000
+SERVO8_TRIM      1000
+SERVO8_MAX       2000
+
+# Mission Planner-facing CUADC parameters
+SCR_USER1        1
+SCR_USER2        0
+SCR_USER3        1
+SCR_USER4        13.5
+SCR_USER5        10
+SCR_USER6        0.10
+SIM_WIND_SPD     0
+SIM_WIND_DIR     0
+
+# ArduPlane 4.6 simulation profile. Replace with measured real-airframe data
+# before any field flight; these are the active 4.6 parameter names.
+AIRSPEED_CRUISE       12.5
+AIRSPEED_MIN          10
+AIRSPEED_MAX          18
+ARSPD_TYPE        100
+ARSPD_USE         1
+FBWB_MIN_ALT      10
+ROLL_LIMIT_DEG        26
+WP_LOITER_RAD         70
+WP_RADIUS             5
+WP_MAX_RADIUS         0
+NAVL1_PERIOD          9
+NAVL1_DAMPING         1.0
+NAVL1_XTRACK_I        0.05
+RLL2SRV_TCONST        0.9
+RLL_RATE_FF           0.32
+RLL_RATE_P            0.14
+RLL_RATE_I            0.09
+RLL_RATE_IMAX         0.4
+RLL_RATE_D            0.025
+RLL_RATE_SMAX         120
+PTCH_LIM_MIN_DEG  -15
+PTCH_LIM_MAX_DEG  15
+PTCH2SRV_TCONST       0.4
+PTCH2SRV_RLL          0.3
+PTCH_RATE_FF          0.55
+PTCH_RATE_P           0.18
+PTCH_RATE_I           0.15
+PTCH_RATE_D           0.008
+PTCH_RATE_SMAX    80
+TECS_TIME_CONST       4
+TECS_PTCH_DAMP        0.8
+TECS_PITCH_MAX    15
+TECS_PITCH_MIN    -15
+TECS_LAND_ARSPD       11
+TECS_LAND_SINK        0.6
+TECS_SINK_MAX         5
+TECS_CLMB_MAX         3
+TECS_LAND_SPDWGT      0
+TECS_LAND_TCONST      1.8
+TECS_LAND_THR         0
+LAND_PF_ARSPD         11
+LAND_PITCH_DEG        -3
+LAND_THEN_NEUTRL      1
+THR_MIN           0
+THR_MAX               100
+THR_SLEWRATE      60
+KFF_RDDRMIX       0
+TKOFF_THR_DELAY   0
+TKOFF_THR_MINACC  0
+TKOFF_THR_MAX         45
+TKOFF_ROTATE_SPD  12
+LAND_DISARMDELAY  5
+SIM_SPEEDUP       1
+
+# JSON external physics and simulated wind-vane input
+WNDVN_TYPE        11
+WNDVN_SPEED_TYPE  11
+WNDVN_SPEED_OFS   0
+
+# SITL calibration values
+INS_ACCOFFS_X     0.001
+INS_ACCOFFS_Y     0.001
+INS_ACCOFFS_Z     0.001
+INS_ACCSCAL_X     1.001
+INS_ACCSCAL_Y     1.001
+INS_ACCSCAL_Z     1.001
+INS_GYR_CAL       0
+TECS_SPDWEIGHT        2
+TECS_THR_DAMP         0.8
+STALL_PREVENTION      1
+LAND_FLARE_ALT        1.0
+LAND_FLARE_SEC        0.8

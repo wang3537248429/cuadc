@@ -1,0 +1,79 @@
+{
+  "field_layout": {
+    "origin_lat_deg": -35.363261,
+    "origin_lon_deg": 149.16523,
+    "origin_alt_m": 46.0,
+    "runway_center_north_m": 0.0,
+    "runway_center_east_m": 0.0,
+    "runway_heading_deg": 0.0,
+    "runway_length_m": 145.0,
+    "runway_width_m": 72.0,
+    "target_center_north_m": 200.0,
+    "target_center_east_m": 0.0,
+    "target_heading_deg": 0.0,
+    "initial_heading_deg": 0.0,
+    "field_size_m": 700.0,
+    "route_max_distance_m": 0.0
+  },
+  "group_centers_ne": {
+    "A": [
+      200,
+      0
+    ],
+    "B": [
+      -200,
+      0
+    ]
+  },
+  "layout_seed": 2025,
+  "fixed_wells": {
+    "A-01": {
+      "north_m": 217.487137,
+      "east_m": -17.030322,
+      "rotation_deg": 218.2634,
+      "arrow_rotation_deg": 94.7118
+    },
+    "A-02": {
+      "north_m": 182.474144,
+      "east_m": -17.847771,
+      "rotation_deg": 219.0778,
+      "arrow_rotation_deg": 186.7976
+    },
+    "A-03": {
+      "north_m": 182.921345,
+      "east_m": 17.99354,
+      "rotation_deg": 59.2925,
+      "arrow_rotation_deg": 269.8312
+    },
+    "A-04": {
+      "north_m": 216.966669,
+      "east_m": 16.914722,
+      "rotation_deg": 137.3802,
+      "arrow_rotation_deg": 318.1667
+    },
+    "B-01": {
+      "north_m": -183.103087,
+      "east_m": -17.495216,
+      "rotation_deg": 117.9583,
+      "arrow_rotation_deg": 277.292
+    },
+    "B-02": {
+      "north_m": -218.190646,
+      "east_m": 17.501102,
+      "rotation_deg": 226.8239,
+      "arrow_rotation_deg": 247.2061
+    },
+    "B-03": {
+      "north_m": -182.616684,
+      "east_m": 18.238599,
+      "rotation_deg": 354.1443,
+      "arrow_rotation_deg": 13.5338
+    },
+    "B-04": {
+      "north_m": -216.870864,
+      "east_m": -17.979015,
+      "rotation_deg": 201.2718,
+      "arrow_rotation_deg": 154.1358
+    }
+  }
+}

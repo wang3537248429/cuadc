@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cuadc-onboard"
+version = "2.1.5"
+description = "CUADC Raspberry Pi real-aircraft vision, release and MAVLink router"
+readme = {text = "CUADC 项目模块。统一中文使用说明见仓库根目录 README.md。", content-type = "text/plain"}
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+  "numpy==1.26.4",
+  "opencv-python==4.11.0.86",
+  "pymavlink==2.4.49",
+  "pyserial==3.5",
+  "PyYAML==6.0.3",
+  "ultralytics==8.4.106",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1"]
+
+[project.scripts]
+cuadc-onboard = "cuadc_onboard.cli:main"
+cuadc-onboard-router = "cuadc_onboard.router:cli_main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

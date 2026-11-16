@@ -1,0 +1,111 @@
+# === Python ===
+venv/
+env/
+.venv/
+.venv-onboard/
+.venv-windows/
+.deps/
+.runtime/
+runs/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+wheelhouse/
+build/
+.eggs/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# === Logs ===
+*.log
+vision_server.err.log
+vision_server.out.log
+
+# === Environment / secrets ===
+.env
+.env.local
+.env.*.local
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# === IDE / editor ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# === WorkBuddy internal ===
+.workbuddy/
+
+# === YOLO / Ultralytics runtime and weights ===
+.ultralytics/
+# 解压后的模型由 gazebo_sim/scripts/bootstrap.sh 或实机安装器生成。
+*.pt
+*.pt.gz
+*.onnx.gz
+*.onnx
+*.engine
+yolov8*.pt
+models/onboard/
+models/vision/*_ncnn_model/
+
+# === Misc ===
+*.tmp
+*.bak
+*.cache
+
+# 本地工作资料和未脱敏备份永不发布
+.private/
+.tmp_docs/
+项目文档/
+.env.*
+!.env.example
+*.local.yaml
+*.local.yml
+*.local.json
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.tlog
+*.ulg
+*.bag
+*.mp4
+*.mov
+*.pcap
+*.bin
+core
+core.*
+*.docx
+# 训练资料与衍生数据仅本地保留
+**/vision_training/dataset/
+**/vision_training/calibration/
+**/vision_training/demo/
+# 许可未确认的素材、样例和训练记录只保存在本机，不进 Git 或 Release。
+gazebo_sim/assets/targets/*
+!gazebo_sim/assets/targets/catalog.json
+!gazebo_sim/assets/targets/README.md
+!gazebo_sim/assets/targets/REFERENCE_SHA256SUMS
+gazebo_sim/datasets/*
+!gazebo_sim/datasets/README.md
+onboard/assets/targets/*
+!onboard/assets/targets/catalog.json
+!onboard/assets/targets/README.md
+**/models/vision/*_training.json
+**/models/vision/training/

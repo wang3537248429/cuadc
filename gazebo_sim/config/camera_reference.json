@@ -1,0 +1,38 @@
+{
+  "capture": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "pixel_format": "RGB8"
+  },
+  "projection": {
+    "horizontal_fov_deg": 80,
+    "fx_px": 1144.0834488904418,
+    "fy_px": 1144.0834488904418,
+    "cx_px": 959.5,
+    "cy_px": 539.5
+  },
+  "mount": {
+    "downward_pitch_deg": 90.0
+  },
+  "reference_video": {
+    "encoded_width": 1040,
+    "encoded_height": 720,
+    "nominal_fps": 30,
+    "average_fps": 29.82918789331735,
+    "type": "带菜单与 OSD 的拍屏图传画面"
+  },
+  "basis": "根据用户实际双线侦察航线（井距扫描线约 1.7～3.6 m）收窄至 80°，1920×1080 原生采集；13 m 高度的 0.6 m 靶板约 53 原生像素。原视频仅作可辨细节参考，不据此声称实机焦距已确定。",
+  "calibration_confirmed": false,
+  "limitations": [
+    "80° 是当前仿真视场；实机焦距和视场仍须用原始相机标定帧测量。",
+    "视频尺寸包含屏幕边缘，不能覆盖 USB 相机协商尺寸。",
+    "畸变、安装误差、曝光与时间延迟需要原始相机帧或标定板测量。"
+  ],
+  "simulation_calibration": {
+    "verified": true,
+    "report": "camera_calibration_sim.json",
+    "views": 26,
+    "rms_reprojection_px": 0.04122453491872053
+  }
+}

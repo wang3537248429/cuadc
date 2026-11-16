@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gz binary
+
+# Patch context lines use a single space for empty upstream lines.
+*.patch whitespace=-blank-at-eol

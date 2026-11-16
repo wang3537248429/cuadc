@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=CUADC中文靶标监控
+Comment=只读Mission Planner日志，显示飞控与树莓派MAVLink数据
+Exec=cuadc-ground-station
+Icon=applications-science
+Terminal=false
+StartupNotify=true
+Categories=Utility;Science;

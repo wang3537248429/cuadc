@@ -1,0 +1,20 @@
+
+# 本地设备信息、媒体与敏感文件
+.private/
+*.local.yaml
+*.local.yml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+eeprom.bin
+*.tlog
+*.ulg
+*.bag
+*.mp4
+*.mov
+*.bin
+core
+core.*

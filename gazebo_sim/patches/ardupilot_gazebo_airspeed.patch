@@ -1,0 +1,16 @@
+diff --git a/src/ArduPilotPlugin.cc b/src/ArduPilotPlugin.cc
+index 5394335..a0fe9a4 100644
+--- a/src/ArduPilotPlugin.cc
++++ b/src/ArduPilotPlugin.cc
+@@ -1998,6 +1998,11 @@ void gz::sim::systems::ArduPilotPlugin::CreateStateJSON(
+     // Wind sensor
+     if (this->dataPtr->anemometerInitialized)
+     {
++      // Feed ArduPlane's SITL airspeed backend from the same Gazebo apparent
++      // wind sensor used by the wind-vane backend. This keeps Gazebo as the
++      // only source of air-relative velocity.
++      writer.Key("airspeed");
++      writer.Double(windSpdBdyA);
+       writer.Key("windvane");
+       writer.StartObject();
+       writer.Key("direction");

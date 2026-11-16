@@ -1,0 +1,153 @@
+# 树莓派 4B（8 GB，Ubuntu 22.04 aarch64）实机配置。
+# 公开示例不代表设备已标定；复制为 onboard.local.yaml 后填写本机参数。
+
+flight_controller:
+  # 实机算法只连接本机路由，不能与路由同时打开飞控串口。
+  endpoint: udpin:127.0.0.1:14551
+  baud: 115200
+  heartbeat_timeout_s: 30.0
+  telemetry_timeout_s: 1.5
+  mission_refresh_s: 5.0
+
+telemetry_router:
+  # 使用本地 udev 别名，不在仓库记录设备序列号；
+  # 不依赖 ttyACM 枚举顺序，也不会误连同机的 interface 02。
+  serial_device: "/dev/cuadc-flight-controller"
+  baud: 115200
+  serial_reconnect_s: 2.0
+  # 路由从固定 14560 源端口向伴随服务 14551 发送，确保双向 MAVLink。
+  companion_host: 127.0.0.1
+  companion_port: 14551
+  router_bind_host: 127.0.0.1
+  router_local_port: 14560
+  # ArduPlane 4.6.2 启动缺陷防护：永久拦截本机伴随程序的外部预检命令 401。
+  # 飞控依然会自行周期执行全部 ARMING_CHECK；AirLink/TELEM2 不经此路由。
+  block_run_prearm_checks: true
+  # 云数传接在飞控的另一MAVLink串口；树莓派不直接连接云端。
+  status_interval_s: 1.0
+  # 本地日志不依赖网络；达到上限后滚动，避免写满 SD 卡。
+  log_tlog: true
+  tlog_max_mb: 256
+  tlog_retained_files: 5
+
+camera:
+  # 自动发现外接 UVC 相机；多相机环境在本地配置中填写稳定设备路径。
+  # 该 by-id 链接由 udev 创建，重启后不会随 video0/video2 顺序变化。
+  device: "auto"
+  # 公开取流初值：1280x720、30 fps；优先 MJPG，失败时回退 YUYV，并记录实际到帧率。
+  # 实物安装按仿真下视相机一致：1280x720、100°水平FOV、机体正下视。
+  width: 1280
+  height: 720
+  fps: 30
+  horizontal_fov_deg: 100.0
+  # 由仿真 100° HFOV 和 1280x720 图像计算的针孔初值。
+  fx_px: 537.0
+  fy_px: 537.0
+  cx_px: 639.5
+  cy_px: 359.5
+  distortion: [0.0, 0.0, 0.0, 0.0, 0.0]
+  # 相机相对机体“正下视”的安装误差，右手系，单位为度。
+  mount_roll_deg: 0.0
+  mount_pitch_deg: 0.0
+  mount_yaw_deg: 0.0
+  # USB 曝光到 MAVLink 姿态样本的总延迟，需要通过日志标定。
+  # 时间配准为有符号值，未测量时不套用旧模型延迟。
+  telemetry_alignment_s: 0.0
+  # 相机对 HOME 基准的离地高度偏置，须结合安装和地面高度实测。
+  agl_offset_m: 0.0
+  save_preview: true
+  calibration_confirmed: false
+  reconnect_s: 2.0
+
+vision:
+  # 每次运行选择任务 1 或任务 2；两套模型都可以部署在树莓派上。
+  task: 1
+  confidence: 0.20
+  # 树莓派4B实测任务一 320/单方向约 1.93 s/帧，调度频率与实测能力匹配。
+  inference_hz: 3.0
+  inference_size_task1: 320
+  inference_size_task2: 960
+  # 640/单方向约 7.51 s/帧；四方向不适合当前树莓派实时扫描。
+  # 单方向存在旋转鲁棒性折中，必须用最终相机实拍集验收后才可确认视觉。
+  angles: [0]
+  device: cpu
+  task1_weights: models/vision/task1_v4m_best.pt
+  task2_weights: models/vision/task2_sim_digits_v1.pt
+  max_result_age_s: 5.0
+  validation_confirmed: false
+
+release:
+  # 公开默认关闭释放；完成设备验收后在本地配置中启用。
+  enabled: false
+  servo_channel: 8
+  release_pwm: 1800
+  # 保留 RC8 手动上水/试舵机，同时允许 DO_SET_SERVO 8 1800 自动投水。
+  # 飞控执行自动指令后忽略死区内输入变化；明显操作 RC8 会重新接管输出。
+  # 此项只校验实际配置，不会修改飞控参数。
+  required_servo_function: 58
+  actuator_brand: PTK
+  actuator_supply_v: 5.0
+  payload_water_ml: 350.0
+  # 350 mL 水 + 约 20 g 瓶体/挂接件的首轮称重假设。
+  payload_total_mass_kg: 0.370
+  # PTK 舵机、5 V 供电的全流程验证初值；未取得具体型号速度表。
+  # 该值包含舵机运动与机构脱扣，后续用视频逐帧测量替换。
+  actuator_delay_s: 0.12
+  # 公开固定翼空投实验在 20 m/s、0.312 kg 载荷下给出等效初值 k≈0.113 s^-1。
+  # 本机按总质量约 0.370 kg 且有效 CdA 相同缩放：
+  # k=0.113*(0.312/0.370)≈0.095 s^-1；瓶形/姿态未知，实投后必须重新拟合。
+  drag_rate_s: 0.095
+  nominal_agl_m: 14.0
+  nominal_airspeed_mps: 12.8
+  min_agl_m: 12.0
+  max_agl_m: 35.0
+  min_airspeed_mps: 12.0
+  max_airspeed_mps: 20.0
+  max_roll_deg: 20.0
+  # 机体航向角速率为次级门限；真实急转主要由 20° 滚转门限拦截。
+  max_yaw_rate_dps: 12.0
+  max_cross_track_m: 6.0
+  command_window_s: 0.25
+  ballistics_calibrated: false
+  # 普通 GPS/北斗：相机估靶与释放时刻之间的残余位置误差，不能直接当作已消除。
+  precision_required: true
+  precision_calibrated: false
+  target_tolerance_m: 0.35
+  gps_relative_sigma_m: 3.0
+  camera_position_sigma_m: 0.3
+  actuator_delay_sigma_s: 0.03
+  altitude_sigma_m: 0.5
+  velocity_sigma_mps: 0.3
+  wind_sigma_mps: 0.5
+  drag_sigma_s: 0.02
+
+mission:
+  max_home_distance_m: 300.0
+  tracking_margin_m: 5.0
+  # 实机航线规划坡度上限。
+  planning_bank_deg: 20.0
+  # 低速规划初值；实机必须先验证失速裕量，机载程序不会修改飞控 PID/空速参数。
+  planning_airspeed_mps: 12.8
+  require_auto: true
+  require_3d_gps: true
+  min_satellites: 6
+  max_hdop: 2.5
+  # dynamic：接受 Mission Planner 当前航线并按任务能力分级。
+  # 有起飞、9101/9102、至少两点扫描、舵机8/1800固定投水和后续降落即可放行；
+  # 精投模式还要求完整动态槽，并屏蔽自主固定投水回退；不完整时禁止启用释放。
+  acceptance_mode: dynamic
+  stable_readbacks: 2
+  # pinned 模式才填写下面两项；dynamic 模式不锁定航点数量、坐标或文件哈希。
+  expected_file: ""
+  expected_sha256: ""
+  # Cube 内部以 float 保存经纬度，回读通常有约 0.2～0.9 m 量化误差。
+  max_position_error_m: 2.0
+
+runtime:
+  directory: .runtime/onboard
+  status_hz: 2.0
+  # 将树莓派识别、选靶和投水状态编码为标准 MAVLink，经数传回传地面端。
+  mavlink_report_enabled: true
+  mavlink_report_hz: 2.0
+  telemetry_log_max_mb: 100
+  telemetry_log_backups: 3

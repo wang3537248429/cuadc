@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <!-- Resource-only model.  The world references its mesh and material maps. -->
+  <model name="cuadc_world_assets">
+    <static>true</static>
+    <link name="resource_anchor"/>
+  </model>
+</sdf>

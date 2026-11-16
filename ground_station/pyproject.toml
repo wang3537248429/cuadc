@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cuadc-ground-station"
+version = "1.0.0"
+description = "CUADC 中文 MAVLink 日志监控"
+readme = {text = "CUADC 项目模块。统一中文使用说明见仓库根目录 README.md。", content-type = "text/plain"}
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = ["pymavlink==2.4.49", "pyserial==3.5"]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1"]
+
+[project.scripts]
+cuadc-ground-station = "cuadc_ground_station.app:main"
+
+[tool.setuptools.packages.find]
+include = ["cuadc_ground_station*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

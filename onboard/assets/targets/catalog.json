@@ -1,0 +1,609 @@
+{
+  "schema": "cuadc-vision-assets.v1",
+  "source_repo": "tools/vision_training",
+  "models": {
+    "task1": {
+      "weights": "task1_v4m_best.pt",
+      "classes": [
+        "machine_gunner",
+        "rocketeer",
+        "multirotor",
+        "fixed_wing",
+        "truck",
+        "air_defense",
+        "tank",
+        "helicopter",
+        "fighter",
+        "transport",
+        "recon",
+        "bomber"
+      ],
+      "selection": "highest_value"
+    },
+    "task2": {
+      "weights": "task2_sim_digits_v1.pt",
+      "classes": [
+        "tens_0",
+        "tens_1",
+        "tens_2",
+        "tens_3",
+        "tens_4",
+        "tens_5",
+        "tens_6",
+        "tens_7",
+        "tens_8",
+        "tens_9",
+        "ones_0",
+        "ones_1",
+        "ones_2",
+        "ones_3",
+        "ones_4",
+        "ones_5",
+        "ones_6",
+        "ones_7",
+        "ones_8",
+        "ones_9"
+      ],
+      "composition": "pair tens/ones boxes from the same frame",
+      "selection": "median",
+      "angles_deg": [
+        0,
+        90,
+        180,
+        270
+      ]
+    }
+  },
+  "rules": {
+    "target_zone_m": [
+      60,
+      60
+    ],
+    "well_count": 4,
+    "occupied_well_count": 3,
+    "well_height_m": 0.5,
+    "minimum_center_spacing_m_exclusive": 30,
+    "task1_board_mm": [
+      600,
+      600
+    ],
+    "task2_board_mm": [
+      600,
+      300
+    ],
+    "precision_radius_m": 3,
+    "effective_radius_m": 5
+  },
+  "task1": [
+    {
+      "key": "machine_gunner",
+      "label": "机枪兵",
+      "value": 1,
+      "icon": "assets/targets/task1/icons/machine_gunner.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/machine_gunner.png",
+        "red": "assets/targets/task1/red/machine_gunner.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/machine_gunner.png",
+        "red": "assets/targets/task1/red/machine_gunner.png"
+      }
+    },
+    {
+      "key": "rocketeer",
+      "label": "火箭兵",
+      "value": 2,
+      "icon": "assets/targets/task1/icons/rocketeer.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/rocketeer.png",
+        "red": "assets/targets/task1/red/rocketeer.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/rocketeer.png",
+        "red": "assets/targets/task1/red/rocketeer.png"
+      }
+    },
+    {
+      "key": "multirotor",
+      "label": "多旋翼",
+      "value": 3,
+      "icon": "assets/targets/task1/icons/multirotor.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/multirotor.png",
+        "red": "assets/targets/task1/red/multirotor.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/multirotor.png",
+        "red": "assets/targets/task1/red/multirotor.png"
+      }
+    },
+    {
+      "key": "fixed_wing",
+      "label": "固定翼",
+      "value": 4,
+      "icon": "assets/targets/task1/icons/fixed_wing.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/fixed_wing.png",
+        "red": "assets/targets/task1/red/fixed_wing.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/fixed_wing.png",
+        "red": "assets/targets/task1/red/fixed_wing.png"
+      }
+    },
+    {
+      "key": "truck",
+      "label": "卡车",
+      "value": 5,
+      "icon": "assets/targets/task1/icons/truck.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/truck.png",
+        "red": "assets/targets/task1/red/truck.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/red/truck.png",
+        "red": "assets/targets/task1/red/truck.png"
+      }
+    },
+    {
+      "key": "air_defense",
+      "label": "防空炮",
+      "value": 6,
+      "icon": "assets/targets/task1/icons/air_defense.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/air_defense.png",
+        "red": "assets/targets/task1/red/air_defense.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/air_defense.png",
+        "red": "assets/targets/task1/red/air_defense.png"
+      }
+    },
+    {
+      "key": "tank",
+      "label": "坦克",
+      "value": 7,
+      "icon": "assets/targets/task1/icons/tank.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/tank.png",
+        "red": "assets/targets/task1/red/tank.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/tank.png",
+        "red": "assets/targets/task1/red/tank.png"
+      }
+    },
+    {
+      "key": "helicopter",
+      "label": "直升机",
+      "value": 8,
+      "icon": "assets/targets/task1/icons/helicopter.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/helicopter.png",
+        "red": "assets/targets/task1/red/helicopter.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/helicopter.png",
+        "red": "assets/targets/task1/red/helicopter.png"
+      }
+    },
+    {
+      "key": "fighter",
+      "label": "战斗机",
+      "value": 9,
+      "icon": "assets/targets/task1/icons/fighter.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/fighter.png",
+        "red": "assets/targets/task1/red/fighter.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/fighter.png",
+        "red": "assets/targets/task1/red/fighter.png"
+      }
+    },
+    {
+      "key": "transport",
+      "label": "运输机",
+      "value": 10,
+      "icon": "assets/targets/task1/icons/transport.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/transport.png",
+        "red": "assets/targets/task1/red/transport.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/transport.png",
+        "red": "assets/targets/task1/red/transport.png"
+      }
+    },
+    {
+      "key": "recon",
+      "label": "侦察机",
+      "value": 11,
+      "icon": "assets/targets/task1/icons/recon.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/recon.png",
+        "red": "assets/targets/task1/red/recon.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/recon.png",
+        "red": "assets/targets/task1/red/recon.png"
+      }
+    },
+    {
+      "key": "bomber",
+      "label": "轰炸机",
+      "value": 12,
+      "icon": "assets/targets/task1/icons/bomber.png",
+      "boards": {
+        "blue": "assets/targets/task1/blue/bomber.png",
+        "red": "assets/targets/task1/red/bomber.png"
+      },
+      "inference": {
+        "blue": "assets/targets/task1/blue/bomber.png",
+        "red": "assets/targets/task1/red/bomber.png"
+      }
+    }
+  ],
+  "task2": [
+    {
+      "number": 1,
+      "label": "01",
+      "boards": {
+        "blue": "assets/targets/task2/blue/number-01.png",
+        "red": "assets/targets/task2/red/number-01.png"
+      },
+      "inference": {
+        "blue": "tools/vision_training/calibration/task2_representatives/blue/number-20.jpg",
+        "red": "tools/vision_training/calibration/task2_representatives/red/number-20.jpg"
+      },
+      "model_validation": {
+        "number": 1,
+        "source_number": 20,
+        "confidence_blue": 0.879448413848877,
+        "confidence_red": 0.9146668314933777,
+        "angle_blue_deg": 180,
+        "angle_red_deg": 180,
+        "assets": {
+          "blue": "tools/vision_training/calibration/task2_representatives/blue/number-20.jpg",
+          "red": "tools/vision_training/calibration/task2_representatives/red/number-20.jpg"
+        }
+      }
+    },
+    {
+      "number": 10,
+      "label": "10",
+      "boards": {
+        "blue": "assets/targets/task2/blue/number-10.png",
+        "red": "assets/targets/task2/red/number-10.png"
+      },
+      "inference": {
+        "blue": "tools/vision_training/calibration/task2_representatives/blue/number-01.jpg",
+        "red": "tools/vision_training/calibration/task2_representatives/red/number-01.jpg"
+      },
+      "model_validation": {
+        "number": 10,
+        "source_number": 1,
+        "confidence_blue": 0.8660523295402527,
+        "confidence_red": 0.9529788494110107,
+        "angle_blue_deg": 90,
+        "angle_red_deg": 180,
+        "assets": {
+          "blue": "tools/vision_training/calibration/task2_representatives/blue/number-01.jpg",
+          "red": "tools/vision_training/calibration/task2_representatives/red/number-01.jpg"
+        }
+      }
+    },
+    {
+      "number": 14,
+      "label": "14",
+      "boards": {
+        "blue": "assets/targets/task2/blue/number-14.png",
+        "red": "assets/targets/task2/red/number-14.png"
+      },
+      "inference": {
+        "blue": "tools/vision_training/calibration/task2_representatives/blue/number-41.jpg",
+        "red": "tools/vision_training/calibration/task2_representatives/red/number-41.jpg"
+      },
+      "model_validation": {
+        "number": 14,
+        "source_number": 41,
+        "confidence_blue": 0.7865435481071472,
+        "confidence_red": 0.8758169412612915,
+        "angle_blue_deg": 270,
+        "angle_red_deg": 270,
+        "assets": {
+          "blue": "tools/vision_training/calibration/task2_representatives/blue/number-41.jpg",
+          "red": "tools/vision_training/calibration/task2_representatives/red/number-41.jpg"
+        }
+      }
+    },
+    {
+      "number": 17,
+      "label": "17",
+      "boards": {
+        "blue": "assets/targets/task2/blue/number-17.png",
+        "red": "assets/targets/task2/red/number-17.png"
+      },
+      "inference": {
+        "blue": "tools/vision_training/calibration/task2_representatives/blue/number-71.jpg",
+        "red": "tools/vision_training/calibration/task2_representatives/red/number-71.jpg"
+      },
+      "model_validation": {
+        "number": 17,
+        "source_number": 71,
+        "confidence_blue": 0.8167293667793274,
+        "confidence_red": 0.8329512476921082,
+        "angle_blue_deg": 90,
+        "angle_red_deg": 180,
+        "assets": {
+          "blue": "tools/vision_training/calibration/task2_representatives/blue/number-71.jpg",
+          "red": "tools/vision_training/calibration/task2_representatives/red/number-71.jpg"
+        }
+      }
+    },
+    {
+      "number": 31,
+      "label": "31",
+      "boards": {
+        "blue": "assets/targets/task2/blue/number-31.png",
+        "red": "assets/targets/task2/red/number-31.png"
+      },
+      "inference": {
+        "blue": "tools/vision_training/calibration/task2_representatives/blue/number-54.jpg",
+        "red": "tools/vision_training/calibration/task2_representatives/red/number-54.jpg"
+      },
+      "model_validation": {
+        "number": 31,
+        "source_number": 54,
+        "confidence_blue": 0.8901106119155884,
+        "confidence_red": 0.9554488658905029,
+        "angle_blue_deg": 180,
+        "angle_red_deg": 180,
+        "assets": {
+          "blue": "tools/vision_training/calibration/task2_representatives/blue/number-54.jpg",
+          "red": "tools/vision_training/calibration/task2_representatives/red/number-54.jpg"
+        }
+      }
+    }
+  ],
+  "empty_boards": {
+    "blue": "assets/targets/task1/blue/empty.png",
+    "red": "assets/targets/task1/red/empty.png"
+  },
+  "validation": [
+    {
+      "task": "task1",
+      "asset": "tools/vision_training/calibration/samples/task1_bomber_blue.jpg",
+      "expected": "bomber",
+      "source": "demo/task1_bomber_blue.gif frame 11"
+    },
+    {
+      "task": "task1",
+      "asset": "tools/vision_training/calibration/samples/task1_bomber_red.jpg",
+      "expected": "bomber",
+      "source": "demo/task1_bomber_red.gif frame 18"
+    },
+    {
+      "task": "task1",
+      "asset": "tools/vision_training/calibration/samples/task1_fighter.jpg",
+      "expected": "fighter",
+      "source": "demo/task1_fighter_hard.gif frame 168"
+    },
+    {
+      "task": "task1",
+      "asset": "tools/vision_training/calibration/samples/task1_tank.jpg",
+      "expected": "tank",
+      "source": "demo/task1_tank.gif frame 13"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/machine_gunner.png",
+      "expected": "machine_gunner",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/machine_gunner.png",
+      "expected": "machine_gunner",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/rocketeer.png",
+      "expected": "rocketeer",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/rocketeer.png",
+      "expected": "rocketeer",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/multirotor.png",
+      "expected": "multirotor",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/multirotor.png",
+      "expected": "multirotor",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/fixed_wing.png",
+      "expected": "fixed_wing",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/fixed_wing.png",
+      "expected": "fixed_wing",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/truck.png",
+      "expected": "truck",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/truck.png",
+      "expected": "truck",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/air_defense.png",
+      "expected": "air_defense",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/air_defense.png",
+      "expected": "air_defense",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/tank.png",
+      "expected": "tank",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/tank.png",
+      "expected": "tank",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/helicopter.png",
+      "expected": "helicopter",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/helicopter.png",
+      "expected": "helicopter",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/fighter.png",
+      "expected": "fighter",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/fighter.png",
+      "expected": "fighter",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/transport.png",
+      "expected": "transport",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/transport.png",
+      "expected": "transport",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/recon.png",
+      "expected": "recon",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/recon.png",
+      "expected": "recon",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/blue/bomber.png",
+      "expected": "bomber",
+      "source": "official rule target / calibrated blue board"
+    },
+    {
+      "task": "task1",
+      "asset": "assets/targets/task1/red/bomber.png",
+      "expected": "bomber",
+      "source": "official rule target / calibrated red board"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/blue/number-20.jpg",
+      "expected": 1,
+      "source": "calibrated blue inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/red/number-20.jpg",
+      "expected": 1,
+      "source": "calibrated red inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/blue/number-01.jpg",
+      "expected": 10,
+      "source": "calibrated blue inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/red/number-01.jpg",
+      "expected": 10,
+      "source": "calibrated red inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/blue/number-41.jpg",
+      "expected": 14,
+      "source": "calibrated blue inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/red/number-41.jpg",
+      "expected": 14,
+      "source": "calibrated red inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/blue/number-71.jpg",
+      "expected": 17,
+      "source": "calibrated blue inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/red/number-71.jpg",
+      "expected": 17,
+      "source": "calibrated red inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/blue/number-54.jpg",
+      "expected": 31,
+      "source": "calibrated blue inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/task2_representatives/red/number-54.jpg",
+      "expected": 31,
+      "source": "calibrated red inference representative"
+    },
+    {
+      "task": "task2",
+      "asset": "tools/vision_training/calibration/samples/task2_76.jpg",
+      "expected": 76,
+      "source": "demo/task2_76.gif frame 40"
+    }
+  ]
+}

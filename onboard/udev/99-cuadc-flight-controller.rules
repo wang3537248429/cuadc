@@ -1,0 +1,5 @@
+# CubePilot CubeOrange+ exposes MAVLink USB CDC ports, not an AT modem.
+# Keep ModemManager from racing the CUADC serial router after enumeration.
+ACTION!="remove", SUBSYSTEM=="tty", ATTRS{idVendor}=="2dae", ATTRS{idProduct}=="1058", ENV{ID_MM_DEVICE_IGNORE}="1"
+# Stable public alias; no per-device serial number is stored here.
+ACTION!="remove", SUBSYSTEM=="tty", ATTRS{idVendor}=="2dae", ATTRS{idProduct}=="1058", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="cuadc-flight-controller"

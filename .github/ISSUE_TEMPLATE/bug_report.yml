@@ -1,0 +1,89 @@
+name: Bug 报告
+description: 报告 Gazebo、ArduPlane、Mission Planner、识别或投放异常
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。提交前请先运行 `./scripts/verify_release.sh`，并移除日志中的隐私信息。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 请清楚说明发生了什么，以及影响哪个任务或组别。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 执行 ./gazebo_sim/scripts/run_sim.sh
+        2. Mission Planner 使用 UDP 14550 连接
+        3. 设置 SCR_USER1=...、SCR_USER2=...、SCR_USER3=...
+        4. 上传哪一个航线并解锁
+        5. 在哪个阶段出现异常
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 运行模式
+      options:
+        - Gazebo 图形界面
+        - CUADC_HEADLESS=1 无界面
+    validations:
+      required: true
+
+  - type: input
+    id: system
+    attributes:
+      label: 系统与硬件
+      placeholder: "Ubuntu 22.04 amd64，CPU、内存、显卡型号"
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Gazebo 与 ROS 版本
+      placeholder: "gz sim 7.9.x，ROS 2 Humble"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mission
+    attributes:
+      label: 任务与参数
+      description: 请附任务一/二、A/B、种子、风速、航线模板或自行规划的关键指令。
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志与结果
+      description: 请粘贴 `.runtime/logs/` 相关片段和 `runs/<运行编号>/result.json`，不要上传整个 `.runtime`。
+      render: shell
+
+  - type: textarea
+    id: media
+    attributes:
+      label: 截图或视频
+      description: 可直接拖入 Gazebo、Mission Planner 或识别窗口截图。

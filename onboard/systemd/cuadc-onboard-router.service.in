@@ -1,0 +1,26 @@
+[Unit]
+Description=CUADC flight-controller USB/local companion MAVLink router
+PartOf=cuadc-onboard.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=@USER@
+Group=@GROUP@
+SupplementaryGroups=dialout
+WorkingDirectory=@PROJECT_DIR@
+Environment=PYTHONUNBUFFERED=1
+ExecStart=@PROJECT_DIR@/.venv-onboard/bin/cuadc-onboard-router --config @CONFIG_PATH@
+Restart=always
+RestartSec=2
+WatchdogSec=20
+TimeoutStartSec=30
+TimeoutStopSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=@PROJECT_DIR@/.runtime @PROJECT_DIR@/runs
+
+[Install]
+WantedBy=cuadc-onboard.target

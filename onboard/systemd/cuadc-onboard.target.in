@@ -1,0 +1,7 @@
+[Unit]
+Description=CUADC Raspberry Pi onboard flight stack
+Wants=cuadc-onboard-router.service cuadc-onboard.service
+After=cuadc-onboard-router.service
+
+[Install]
+WantedBy=multi-user.target

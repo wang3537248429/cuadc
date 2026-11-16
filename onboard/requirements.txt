@@ -1,0 +1,10 @@
+# Raspberry Pi 4B / Ubuntu 22.04 aarch64 companion-only dependencies.
+# Gazebo, ROS, Qt, MAVProxy and SITL are intentionally excluded.
+numpy==1.26.4
+opencv-python==4.11.0.86
+pymavlink==2.4.49
+pyserial==3.5
+PyYAML==6.0.3
+torch @ https://download.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl
+torchvision @ https://download.pytorch.org/whl/cpu/torchvision-0.28.0%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl
+ultralytics==8.4.106

@@ -1,0 +1,437 @@
+<?xml version="1.0"?>
+<sdf version="1.9" xmlns:gz="http://gazebosim.org/schemas">
+  <model name="cuadc_twin">
+    <self_collide>false</self_collide>
+    <link name="fuselage">
+      <inertial>
+        <mass>1.799</mass>
+        <inertia>
+          <ixx>1.2473</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.6716</iyy><iyz>0</iyz><izz>1.5701</izz>
+        </inertia>
+      </inertial>
+      <collision name="fuselage_collision">
+        <geometry><capsule><radius>0.13</radius><length>1.75</length></capsule></geometry>
+        <pose>0 0 0 0 1.5707963 0</pose>
+        <surface><friction><ode><mu>6.0</mu><mu2>6.0</mu2></ode></friction></surface>
+      </collision>
+      <collision name="wing_collision">
+        <geometry><box><size>0.92 3.20 0.065</size></box></geometry>
+        <pose>-0.05 0 0.04 0 0 0</pose>
+        <surface><friction><ode><mu>6.0</mu><mu2>6.0</mu2></ode></friction></surface>
+      </collision>
+      <collision name="tail_collision">
+        <geometry><box><size>0.50 1.08 0.04</size></box></geometry>
+        <pose>-1.02 0 0.08 0 0 0</pose>
+        <surface><friction><ode><mu>6.0</mu><mu2>6.0</mu2></ode></friction></surface>
+      </collision>
+      <sensor name="airframe_contact" type="contact">
+        <topic>/cuadc/airframe/contacts</topic>
+        <always_on>true</always_on><update_rate>500</update_rate>
+        <contact>
+          <collision>fuselage_collision</collision>
+        </contact>
+      </sensor>
+      <!--
+        Visual geometry is the official ArduPilot SITL_Models Mini Talon.
+        The source model has a 1.14 m span; a uniform 160 / 57 scale makes
+        the rendered airframe exactly 3.2 m wide.  Collision and inertia stay
+        low-poly and project-calibrated so visual quality does not reduce the
+        500 Hz physics rate.
+      -->
+      <visual name="official_fuselage">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_fuselage.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.96 0.96 0.95 1</diffuse><specular>0.18 0.18 0.18 1</specular><pbr><metal><roughness>0.72</roughness><metalness>0.04</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_fuselage_logos">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_fuselage_logos.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>1 1 1 1</diffuse><specular>0.12 0.12 0.12 1</specular><pbr><metal><albedo_map>model://cuadc_twin/meshes/ardupilot_logo.png</albedo_map><roughness>0.76</roughness><metalness>0.02</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_forward_deck">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_forward_deck.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.20 0.23 0.27 1</diffuse><specular>0.16 0.16 0.16 1</specular><pbr><metal><roughness>0.68</roughness><metalness>0.05</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_left_wing">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_left_wing.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.96 0.96 0.95 1</diffuse><specular>0.18 0.18 0.18 1</specular><pbr><metal><roughness>0.72</roughness><metalness>0.04</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_left_wing_logo">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_left_wing_logo.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>1 1 1 1</diffuse><specular>0.12 0.12 0.12 1</specular><pbr><metal><albedo_map>model://cuadc_twin/meshes/ardupilot_logo.png</albedo_map><roughness>0.76</roughness><metalness>0.02</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_right_wing">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_right_wing.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.96 0.96 0.95 1</diffuse><specular>0.18 0.18 0.18 1</specular><pbr><metal><roughness>0.72</roughness><metalness>0.04</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_left_tail">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_left_tail.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.96 0.96 0.95 1</diffuse><specular>0.18 0.18 0.18 1</specular><pbr><metal><roughness>0.72</roughness><metalness>0.04</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_right_tail">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_right_tail.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.96 0.96 0.95 1</diffuse><specular>0.18 0.18 0.18 1</specular><pbr><metal><roughness>0.72</roughness><metalness>0.04</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_left_ruddervator">
+        <pose degrees="true">-1.024561404 0.216140351 0.126315789 45 -10 6</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_left_ruddervator.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.72 0.08 0.06 1</diffuse><specular>0.16 0.16 0.16 1</specular><pbr><metal><roughness>0.70</roughness><metalness>0.03</metalness></metal></pbr></material>
+      </visual>
+      <visual name="official_right_ruddervator">
+        <pose degrees="true">-1.024561404 -0.216140351 0.126315789 -45 -10 -6</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_right_ruddervator.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.72 0.08 0.06 1</diffuse><specular>0.16 0.16 0.16 1</specular><pbr><metal><roughness>0.70</roughness><metalness>0.03</metalness></metal></pbr></material>
+      </visual>
+    </link>
+
+    <link name="aileron_left">
+      <pose>-0.300350877 1.041403509 0.048842105 0 0 0</pose>
+      <inertial><mass>0.12</mass><inertia><ixx>0.018</ixx><iyy>0.002</iyy><izz>0.020</izz></inertia></inertial>
+      <collision name="collision"><geometry><box><size>0.22 0.68 0.025</size></box></geometry></collision>
+      <visual name="official_left_aileron">
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_left_aileron.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.72 0.08 0.06 1</diffuse><specular>0.16 0.16 0.16 1</specular><pbr><metal><roughness>0.70</roughness><metalness>0.03</metalness></metal></pbr></material>
+      </visual>
+    </link>
+    <joint name="aileron_left_joint" type="revolute">
+      <parent>fuselage</parent><child>aileron_left</child>
+      <pose>0.042105263 0 0 0 0 0</pose>
+      <axis><xyz>0 1 0</xyz><limit><lower>-0.44</lower><upper>0.44</upper></limit><dynamics><damping>0.12</damping></dynamics></axis>
+    </joint>
+
+    <link name="aileron_right">
+      <pose>-0.300350877 -1.041403509 0.048842105 0 0 0</pose>
+      <inertial><mass>0.12</mass><inertia><ixx>0.018</ixx><iyy>0.002</iyy><izz>0.020</izz></inertia></inertial>
+      <collision name="collision"><geometry><box><size>0.22 0.68 0.025</size></box></geometry></collision>
+      <visual name="official_right_aileron">
+        <pose>0.014035088 -0.005614035 0 0 0 0</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/mini_talon_right_aileron.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><diffuse>0.72 0.08 0.06 1</diffuse><specular>0.16 0.16 0.16 1</specular><pbr><metal><roughness>0.70</roughness><metalness>0.03</metalness></metal></pbr></material>
+      </visual>
+    </link>
+    <joint name="aileron_right_joint" type="revolute">
+      <parent>fuselage</parent><child>aileron_right</child>
+      <pose>0.042105263 0 0 0 0 0</pose>
+      <axis><xyz>0 1 0</xyz><limit><lower>-0.44</lower><upper>0.44</upper></limit><dynamics><damping>0.12</damping></dynamics></axis>
+    </joint>
+
+    <link name="elevator">
+      <pose>-1.18 0 0.08 0 0 0</pose>
+      <inertial><mass>0.11</mass><inertia><ixx>0.012</ixx><iyy>0.002</iyy><izz>0.014</izz></inertia></inertial>
+      <collision name="collision"><geometry><box><size>0.22 1.04 0.025</size></box></geometry></collision>
+      <!-- Hidden low-poly aerodynamic elevator; the official V-tail above is the rendered surface. -->
+    </link>
+    <joint name="elevator_joint" type="revolute">
+      <parent>fuselage</parent><child>elevator</child><pose>0.10 0 0 0 0 0</pose>
+      <axis><xyz>0 1 0</xyz><limit><lower>-0.44</lower><upper>0.44</upper></limit><dynamics><damping>0.12</damping></dynamics></axis>
+    </joint>
+
+    <link name="rudder">
+      <pose>-1.18 0 0.28 0 -0.28 0</pose>
+      <inertial><mass>0.09</mass><inertia><ixx>0.003</ixx><iyy>0.004</iyy><izz>0.001</izz></inertia></inertial>
+      <collision name="collision"><geometry><box><size>0.22 0.025 0.32</size></box></geometry></collision>
+      <!-- Hidden low-poly aerodynamic rudder; the official V-tail above is the rendered surface. -->
+    </link>
+    <joint name="rudder_joint" type="revolute">
+      <parent>fuselage</parent><child>rudder</child><pose>0.10 0 0 0 0 0</pose>
+      <axis><xyz>0 0 1</xyz><limit><lower>-0.52</lower><upper>0.52</upper></limit><dynamics><damping>0.10</damping></dynamics></axis>
+    </joint>
+
+    <link name="prop_left">
+      <pose>0.24 0.78 0.02 0 0 0</pose>
+      <inertial><mass>0.08</mass><inertia><ixx>0.0004</ixx><iyy>0.0022</iyy><izz>0.0022</izz></inertia></inertial>
+      <visual name="official_motor">
+        <pose>0 0 0 0 1.570796327 0</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/propdrive_3536_motor_can.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+      </visual>
+      <visual name="official_propeller">
+        <pose>0 0 -0.014035088 0 1.570796327 0</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/iris_prop_cw.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><ambient>0.025 0.025 0.025 1</ambient><diffuse>0.035 0.035 0.035 1</diffuse><specular>0.12 0.12 0.12 1</specular><pbr><metal><roughness>0.55</roughness><metalness>0.08</metalness></metal></pbr></material>
+      </visual>
+    </link>
+    <joint name="prop_left_joint" type="revolute">
+      <parent>fuselage</parent><child>prop_left</child>
+      <axis><xyz>1 0 0</xyz><dynamics><damping>0.002</damping></dynamics></axis>
+    </joint>
+    <link name="prop_right">
+      <pose>0.24 -0.78 0.02 0 0 0</pose>
+      <inertial><mass>0.08</mass><inertia><ixx>0.0004</ixx><iyy>0.0022</iyy><izz>0.0022</izz></inertia></inertial>
+      <visual name="official_motor">
+        <pose>0 0 0 0 1.570796327 0</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/propdrive_3536_motor_can.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+      </visual>
+      <visual name="official_propeller">
+        <pose>0 0 -0.014035088 0 1.570796327 0</pose>
+        <geometry><mesh><uri>model://cuadc_twin/meshes/iris_prop_cw.dae</uri><scale>2.807017544 2.807017544 2.807017544</scale></mesh></geometry>
+        <material><ambient>0.025 0.025 0.025 1</ambient><diffuse>0.035 0.035 0.035 1</diffuse><specular>0.12 0.12 0.12 1</specular><pbr><metal><roughness>0.55</roughness><metalness>0.08</metalness></metal></pbr></material>
+      </visual>
+    </link>
+    <joint name="prop_right_joint" type="revolute">
+      <parent>fuselage</parent><child>prop_right</child>
+      <axis><xyz>1 0 0</xyz><dynamics><damping>0.002</damping></dynamics></axis>
+    </joint>
+
+    <link name="sensor_link">
+      <pose>0.10 0 -0.08 0 0 0</pose>
+      <inertial><mass>0.08</mass><inertia><ixx>0.0001</ixx><iyy>0.0001</iyy><izz>0.0001</izz></inertia></inertial>
+      <sensor name="imu" type="imu">
+        <!-- ArduPilotPlugin consumes IMU samples directly in FRD axes. -->
+        <pose degrees="true">0 0 0 180 0 0</pose>
+        <always_on>true</always_on><update_rate>400</update_rate>
+      </sensor>
+      <sensor name="gps" type="navsat">
+        <always_on>true</always_on><update_rate>10</update_rate>
+      </sensor>
+      <sensor name="barometer" type="air_pressure">
+        <always_on>true</always_on><update_rate>50</update_rate>
+        <air_pressure><pressure><noise type="gaussian"><mean>0</mean><stddev>0.5</stddev></noise></pressure></air_pressure>
+      </sensor>
+      <sensor name="down_camera" type="camera">
+        <pose>0 0 -0.30 0 1.5707963 0</pose>
+        <topic>/cuadc/camera/image</topic>
+        <always_on>true</always_on><update_rate>30</update_rate>
+        <camera>
+          <horizontal_fov>1.3962634</horizontal_fov>
+          <image><width>1920</width><height>1080</height><format>R8G8B8</format><anti_aliasing>2</anti_aliasing></image>
+          <!-- Payload remains visible in the overview, with full physics,
+               while the reconnaissance camera excludes its visual layer. -->
+          <visibility_mask>1</visibility_mask>
+          <clip><near>0.15</near><far>350</far></clip>
+          <lens><type>gnomonical</type><scale_to_hfov>true</scale_to_hfov></lens>
+        </camera>
+      </sensor>
+    </link>
+    <joint name="sensor_joint" type="fixed"><parent>fuselage</parent><child>sensor_link</child></joint>
+
+    <link name="anemometer_link">
+      <pose>0.55 0 0.10 0 0 0</pose>
+      <inertial><mass>0.02</mass><inertia><ixx>0.00001</ixx><iyy>0.00001</iyy><izz>0.00001</izz></inertia></inertial>
+      <sensor name="anemometer" type="custom" gz:type="anemometer">
+        <always_on>true</always_on><update_rate>30</update_rate>
+      </sensor>
+    </link>
+    <joint name="anemometer_joint" type="fixed"><parent>fuselage</parent><child>anemometer_link</child></joint>
+
+    <link name="release_signal">
+      <inertial><mass>0.001</mass><inertia><ixx>0.000001</ixx><iyy>0.000001</iyy><izz>0.000001</izz></inertia></inertial>
+    </link>
+    <joint name="release_signal_joint" type="revolute">
+      <parent>fuselage</parent><child>release_signal</child>
+      <axis><xyz>1 0 0</xyz><limit><lower>0</lower><upper>0</upper></limit></axis>
+    </joint>
+
+    <model name="payload">
+      <pose>0 0 -0.32 0 0 0</pose>
+      <self_collide>false</self_collide>
+      <link name="bottle">
+        <enable_wind>true</enable_wind>
+        <inertial>
+          <mass>0.37</mass>
+          <inertia><ixx>0.00225</ixx><iyy>0.00225</iyy><izz>0.00055</izz></inertia>
+        </inertial>
+        <collision name="bottle_collision">
+          <geometry><capsule><radius>0.034</radius><length>0.19</length></capsule></geometry>
+          <surface><friction><ode><mu>0.55</mu><mu2>0.55</mu2></ode></friction></surface>
+        </collision>
+        <visual name="bottle_visual">
+          <visibility_flags>2</visibility_flags>
+          <geometry><capsule><radius>0.036</radius><length>0.19</length></capsule></geometry>
+          <material><ambient>0.55 0.78 0.95 0.78</ambient><diffuse>0.55 0.78 0.95 0.78</diffuse></material>
+        </visual>
+        <sensor name="impact_sensor" type="contact">
+          <topic>/cuadc/payload/contacts</topic><always_on>true</always_on><update_rate>200</update_rate>
+          <contact><collision>bottle_collision</collision></contact>
+        </sensor>
+      </link>
+
+      <!-- Six 17 cm panels form a 1.02 m streamer.  The panels intentionally
+           have no collision geometry: a 4 mm cloth sheet is not a useful
+           collision body, and allowing it to hit the carrier produces
+           artificial constraint impulses.  WindEffects still acts on every
+           panel, while two damped rotational axes provide the visible
+           pitch/yaw flexibility of cloth without an unconstrained twist DOF. -->
+      <link name="ribbon_1">
+        <pose>-0.13 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <link name="ribbon_2">
+        <pose>-0.30 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <link name="ribbon_3">
+        <pose>-0.47 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <link name="ribbon_4">
+        <pose>-0.64 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <link name="ribbon_5">
+        <pose>-0.81 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <link name="ribbon_6">
+        <pose>-0.98 0 0 0 0 0</pose><enable_wind>true</enable_wind>
+        <velocity_decay><linear>0.02</linear><angular>0.15</angular></velocity_decay>
+        <inertial><mass>0.003</mass><inertia><ixx>0.00002</ixx><iyy>0.00001</iyy><izz>0.00002</izz></inertia></inertial>
+        <visual name="v"><visibility_flags>2</visibility_flags><geometry><box><size>0.17 0.05 0.004</size></box></geometry><material><ambient>0.95 0.01 0.01 1</ambient><diffuse>0.95 0.01 0.01 1</diffuse></material></visual>
+      </link>
+      <joint name="ribbon_joint_1" type="universal">
+        <parent>bottle</parent><child>ribbon_1</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+      <joint name="ribbon_joint_2" type="universal">
+        <parent>ribbon_1</parent><child>ribbon_2</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+      <joint name="ribbon_joint_3" type="universal">
+        <parent>ribbon_2</parent><child>ribbon_3</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+      <joint name="ribbon_joint_4" type="universal">
+        <parent>ribbon_3</parent><child>ribbon_4</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+      <joint name="ribbon_joint_5" type="universal">
+        <parent>ribbon_4</parent><child>ribbon_5</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+      <joint name="ribbon_joint_6" type="universal">
+        <parent>ribbon_5</parent><child>ribbon_6</child><pose>0.085 0 0 0 0 0</pose>
+        <axis><xyz>0 1 0</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis>
+        <axis2><xyz>0 0 1</xyz><limit><lower>-1.20</lower><upper>1.20</upper><effort>0.30</effort><velocity>8</velocity></limit><dynamics><damping>0.05</damping><friction>0.001</friction></dynamics></axis2>
+      </joint>
+    </model>
+
+    <plugin filename="gz-sim-detachable-joint-system" name="gz::sim::systems::DetachableJoint">
+      <parent_link>fuselage</parent_link>
+      <child_model>payload</child_model>
+      <child_link>bottle</child_link>
+      <detach_topic>/cuadc/payload/detach</detach_topic>
+      <output_topic>/cuadc/payload/released</output_topic>
+    </plugin>
+    <plugin filename="CuadcPayloadReleaseSystem" name="cuadc::sim::PayloadReleaseSystem">
+      <input_topic>/cuadc/payload/release</input_topic>
+      <detach_topic>/cuadc/payload/detach</detach_topic>
+      <impact_topic>/cuadc/payload/impact</impact_topic>
+      <threshold>0.75</threshold>
+      <!-- PTK 5 V command-to-mechanical-release provisional total delay. -->
+      <delay_s>0.12</delay_s>
+    </plugin>
+    <plugin filename="CuadcHandLaunchSystem" name="cuadc::sim::HandLaunchSystem">
+      <link_name>fuselage</link_name>
+      <topic>/cuadc/hand_launch</topic>
+      <detach_topic>/cuadc/hand_launch/detach</detach_topic>
+      <held_topic>/cuadc/hand_launch/held</held_topic>
+      <launch_mass>2.888</launch_mass>
+      <impulse_duration>0.20</impulse_duration>
+    </plugin>
+    <plugin filename="CuadcAnemometerSystem" name="cuadc::sim::AnemometerSystem">
+      <sensor_name>anemometer</sensor_name>
+      <wind_velocity>0 0 0</wind_velocity>
+    </plugin>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>/cuadc/airframe/joint_state</topic>
+    </plugin>
+    <plugin filename="CuadcAirframeDiagnosticsSystem" name="cuadc::sim::AirframeDiagnosticsSystem">
+      <topic>/cuadc/airframe/control_state</topic>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>aileron_left_joint</joint_name><topic>/cuadc/controls/aileron_left</topic>
+      <p_gain>10</p_gain><i_gain>0</i_gain><d_gain>0.25</d_gain>
+      <cmd_max>3</cmd_max><cmd_min>-3</cmd_min>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>aileron_right_joint</joint_name><topic>/cuadc/controls/aileron_right</topic>
+      <p_gain>10</p_gain><i_gain>0</i_gain><d_gain>0.25</d_gain>
+      <cmd_max>3</cmd_max><cmd_min>-3</cmd_min>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>elevator_joint</joint_name><topic>/cuadc/controls/elevator</topic>
+      <p_gain>10</p_gain><i_gain>0</i_gain><d_gain>0.25</d_gain>
+      <cmd_max>3</cmd_max><cmd_min>-3</cmd_min>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>rudder_joint</joint_name><topic>/cuadc/controls/rudder</topic>
+      <p_gain>10</p_gain><i_gain>0</i_gain><d_gain>0.25</d_gain>
+      <cmd_max>3</cmd_max><cmd_min>-3</cmd_min>
+    </plugin>
+    <plugin filename="CuadcTwinMotorSystem" name="cuadc::sim::TwinMotorSystem">
+      <body_link>fuselage</body_link>
+      <left_joint>prop_left_joint</left_joint>
+      <right_joint>prop_right_joint</right_joint>
+      <throttle_topic>/cuadc/motors/throttle</throttle_topic>
+      <left_offset>0.24 0.78 0.02</left_offset>
+      <right_offset>0.24 -0.78 0.02</right_offset>
+      <thrust_coefficient>0.0000171616</thrust_coefficient>
+      <torque_coefficient>0.0000005</torque_coefficient>
+      <max_thrust_per_motor>17.1616</max_thrust_per_motor>
+      <max_shaft_speed>1000.0</max_shaft_speed>
+      <motor_time_constant>0.18</motor_time_constant>
+      <!-- Slow only the rendered/rigid-joint angular rate; aerodynamic shaft
+           speed above remains full scale, avoiding high-speed solver aliasing. -->
+      <visual_speed_scale>0.06</visual_speed_scale>
+      <!-- Bounded grass/belly-skid braking. It is contact-gated and inactive
+           while throttle exceeds 20%, so it cannot alter airborne handling. -->
+      <ground_brake_force>30.0</ground_brake_force>
+      <ground_brake_height>0.65</ground_brake_height>
+      <ground_brake_throttle>0.20</ground_brake_throttle>
+    </plugin>
+
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <link_name>fuselage</link_name><cp>0.055 0 0.04</cp><area>1.35</area>
+      <forward>1 0 0</forward><upward>0 0 1</upward>
+      <a0>0.055</a0><cla>5.20</cla><cda>0.40</cda><cma>-0.25</cma>
+      <alpha_stall>0.32</alpha_stall><cla_stall>-3.1</cla_stall><cda_stall>1.05</cda_stall><cma_stall>0</cma_stall>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <link_name>elevator</link_name><control_joint_name>elevator_joint</control_joint_name><control_joint_rad_to_cl>-3.0</control_joint_rad_to_cl>
+      <cp>0 0 0</cp><area>0.18</area><forward>1 0 0</forward><upward>0 0 1</upward>
+      <a0>0</a0><cla>4.4</cla><cda>0.08</cda><cma>0</cma><alpha_stall>0.40</alpha_stall><cla_stall>-2.8</cla_stall><cda_stall>1.0</cda_stall>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <link_name>aileron_left</link_name><control_joint_name>aileron_left_joint</control_joint_name><control_joint_rad_to_cl>-3.6</control_joint_rad_to_cl>
+      <cp>0 0 0</cp><area>0.23</area><forward>1 0 0</forward><upward>0 0 1</upward>
+      <a0>0</a0><cla>4.5</cla><cda>0.07</cda><cma>0</cma><alpha_stall>0.40</alpha_stall><cla_stall>-2.8</cla_stall><cda_stall>1.0</cda_stall>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <link_name>aileron_right</link_name><control_joint_name>aileron_right_joint</control_joint_name><control_joint_rad_to_cl>-3.6</control_joint_rad_to_cl>
+      <cp>0 0 0</cp><area>0.23</area><forward>1 0 0</forward><upward>0 0 1</upward>
+      <a0>0</a0><cla>4.5</cla><cda>0.07</cda><cma>0</cma><alpha_stall>0.40</alpha_stall><cla_stall>-2.8</cla_stall><cda_stall>1.0</cda_stall>
+    </plugin>
+    <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+      <link_name>rudder</link_name><control_joint_name>rudder_joint</control_joint_name><control_joint_rad_to_cl>-1.2</control_joint_rad_to_cl>
+      <cp>0 0 0</cp><area>0.17</area><forward>1 0 0</forward><upward>0 1 0</upward>
+      <a0>0</a0><cla>3.8</cla><cda>0.08</cda><cma>0</cma><alpha_stall>0.42</alpha_stall><cla_stall>-2.6</cla_stall><cda_stall>1.0</cda_stall>
+    </plugin>
+    <plugin filename="ArduPilotPlugin" name="ArduPilotPlugin">
+      <fdm_addr>127.0.0.1</fdm_addr><fdm_port_in>9052</fdm_port_in>
+      <connectionTimeoutMaxCount>20</connectionTimeoutMaxCount><lock_step>1</lock_step><no_time_sync>1</no_time_sync>
+      <gazeboXYZToNED degrees="true">0 0 0 180 0 0</gazeboXYZToNED>
+      <modelXYZToAirplaneXForwardZDown degrees="true">0 0 0 180 0 0</modelXYZToAirplaneXForwardZDown>
+      <imuName>sensor_link::imu</imuName>
+      <anemometer>anemometer_link::anemometer</anemometer>
+      <control channel="0"><jointName>aileron_left_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/controls/aileron_left</cmd_topic><multiplier>-0.70</multiplier><offset>-0.5</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+      <control channel="0"><jointName>aileron_right_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/controls/aileron_right</cmd_topic><multiplier>0.70</multiplier><offset>-0.5</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+      <control channel="1"><jointName>elevator_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/controls/elevator</cmd_topic><multiplier>0.50</multiplier><offset>-0.5</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+      <control channel="2"><jointName>prop_left_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/motors/throttle</cmd_topic><multiplier>1</multiplier><offset>0</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+      <control channel="3"><jointName>rudder_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/controls/rudder</cmd_topic><multiplier>-0.35</multiplier><offset>-0.5</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+      <control channel="7"><jointName>release_signal_joint</jointName><type>COMMAND</type><cmd_topic>/cuadc/payload/release</cmd_topic><multiplier>1</multiplier><offset>0</offset><servo_min>1000</servo_min><servo_max>2000</servo_max></control>
+    </plugin>
+  </model>
+</sdf>

@@ -1,0 +1,39 @@
+[Unit]
+Description=CUADC Raspberry Pi onboard vision and payload companion
+Wants=cuadc-onboard-router.service
+After=cuadc-onboard-router.service
+PartOf=cuadc-onboard.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=@USER@
+Group=@GROUP@
+SupplementaryGroups=video
+WorkingDirectory=@PROJECT_DIR@
+Environment=YOLO_CONFIG_DIR=@PROJECT_DIR@/.runtime/onboard/ultralytics
+Environment=TORCH_HOME=@PROJECT_DIR@/.runtime/onboard/torch-cache
+Environment=MPLCONFIGDIR=@PROJECT_DIR@/.runtime/onboard/matplotlib
+Environment=PYTHONUNBUFFERED=1
+ExecStartPre=@WAIT_SCRIPT@ --config @CONFIG_PATH@ --camera --serial --timeout 60
+# Device existence is checked above.  The asynchronous runtime owns camera
+# health/reconnect handling; a synchronous V4L2 frame read here can remain in
+# an uninterruptible USB URB wait and wedge service startup.
+ExecStartPre=@PROJECT_DIR@/.venv-onboard/bin/cuadc-onboard --config @CONFIG_PATH@ check --skip-camera
+ExecStart=@PROJECT_DIR@/.venv-onboard/bin/cuadc-onboard --config @CONFIG_PATH@ run
+Restart=always
+RestartSec=3
+WatchdogSec=30
+TimeoutStartSec=150
+# A signal may arrive during a bounded 10-12 s MAVLink mission transaction.
+# Leave enough time for that transaction, the safe shadow write/readback, and
+# camera-thread cleanup so systemd does not SIGKILL the process mid-EEPROM I/O.
+TimeoutStopSec=45
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=@PROJECT_DIR@/.runtime @PROJECT_DIR@/runs
+
+[Install]
+WantedBy=cuadc-onboard.target

@@ -1,0 +1,69 @@
+diff --git a/src/ArduPilotPlugin.cc b/src/ArduPilotPlugin.cc
+index a0fe9a4..6a04335 100644
+--- a/src/ArduPilotPlugin.cc
++++ b/src/ArduPilotPlugin.cc
+@@ -23,6 +23,7 @@
+ 
+ #include <algorithm>
+ #include <chrono>
++#include <cmath>
+ #include <functional>
+ #include <memory>
+ #include <mutex>
+@@ -1914,6 +1915,56 @@ void gz::sim::systems::ArduPilotPlugin::CreateStateJSON(
+         //       << "\n";
+     }
+ 
++    // Never forward a corrupted physics sample to ArduPilot.  In particular,
++    // SITL's local-position conversion assumes finite, competition-scale
++    // coordinates and can raise SIGFPE if a physics backend emits NaN or an
++    // overflow-sized transient.  Keeping the previous valid JSON frame also
++    // makes the originating Gazebo fault visible in this process instead of
++    // turning it into an unrelated flight-controller crash.
++    const auto finiteVector = [](const gz::math::Vector3d &_value)
++    {
++      return std::isfinite(_value.X()) &&
++             std::isfinite(_value.Y()) &&
++             std::isfinite(_value.Z());
++    };
++    const auto &statePosition = wldAToBdyA.Pos();
++    const auto &stateRotation = wldAToBdyA.Rot();
++    const bool finiteState =
++        std::isfinite(timestamp) &&
++        finiteVector(statePosition) &&
++        std::isfinite(stateRotation.W()) &&
++        std::isfinite(stateRotation.X()) &&
++        std::isfinite(stateRotation.Y()) &&
++        std::isfinite(stateRotation.Z()) &&
++        finiteVector(velWldA) &&
++        finiteVector(angularVel) &&
++        finiteVector(linearAccel) &&
++        (!this->dataPtr->anemometerInitialized ||
++         (std::isfinite(windSpdBdyA) && std::isfinite(windDirBdyA))) &&
++        statePosition.Length() < 1.0e6 &&
++        velWldA.Length() < 1.0e4 &&
++        angularVel.Length() < 1.0e5 &&
++        linearAccel.Length() < 1.0e6;
++    static bool invalidStateReported{false};
++    if (!finiteState)
++    {
++      if (!invalidStateReported)
++      {
++        gzerr << "[" << this->dataPtr->modelName
++              << "] refusing non-finite / unbounded external physics state:"
++              << " position=" << statePosition
++              << " quaternion=" << stateRotation
++              << " velocity=" << velWldA
++              << " gyro=" << angularVel
++              << " acceleration=" << linearAccel
++              << " apparent_wind=(" << windSpdBdyA << ","
++              << windDirBdyA << ")\n";
++        invalidStateReported = true;
++      }
++      return;
++    }
++    invalidStateReported = false;
++
+     // build JSON document
+     rapidjson::StringBuffer s;
+     rapidjson::Writer<rapidjson::StringBuffer> writer(s);

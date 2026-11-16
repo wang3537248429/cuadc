@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# 实机目录本身就是完整项目根，不再依赖仓库顶层的共享 src/models。
+CUADC_SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CUADC_PROJECT_DIR="$(cd -- "$CUADC_SCRIPT_DIR/.." && pwd)"
+CUADC_ONBOARD_DIR="$CUADC_PROJECT_DIR"
+if [[ -z "${CUADC_ONBOARD_CONFIG:-}" ]]; then
+  CUADC_ONBOARD_CONFIG="$CUADC_ONBOARD_DIR/config/onboard.local.yaml"
+  if [[ ! -f "$CUADC_ONBOARD_CONFIG" ]]; then
+    CUADC_ONBOARD_CONFIG="$CUADC_ONBOARD_DIR/config/onboard.yaml"
+  fi
+fi
+CUADC_ONBOARD_SYSTEMD_DIR="$CUADC_ONBOARD_DIR/systemd"
+CUADC_ONBOARD_REQUIREMENTS="$CUADC_ONBOARD_DIR/requirements.txt"
+
+export CUADC_PROJECT_DIR CUADC_ONBOARD_DIR CUADC_ONBOARD_CONFIG
+export CUADC_ONBOARD_SYSTEMD_DIR CUADC_ONBOARD_REQUIREMENTS

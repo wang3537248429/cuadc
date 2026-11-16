@@ -1,0 +1,4 @@
+# Mission Planner parameter import file for the dedicated payload output.
+# Keep the aircraft disarmed and the payload mechanism physically disconnected
+# while loading and rebooting the flight controller.
+SERVO8_FUNCTION,0
