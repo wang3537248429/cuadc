@@ -30,7 +30,7 @@ classifiers = [
 [project.optional-dependencies]
 gui = ["PySide6-Essentials==6.11.1"]
 vision = ["ultralytics==8.4.106"]
-test = ["pytest==9.1.1"]
+test = ["pytest==9.2.0"]
 
 [project.scripts]
 cuadc-sim = "cuadc_sim.cli:main"
