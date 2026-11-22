@@ -5,7 +5,7 @@
 
 ## YOLO、Ultralytics 与模型权重
 
-运行时从 `models/vision/` 加载使用者自行准备的模型，当前源码与 Release 附件不分发权重。Ultralytics、PyTorch、OpenCV、
+运行时从 `models/vision/` 加载仓库随附的两套运行权重归档，安装器会先校验并解压。Ultralytics、PyTorch、OpenCV、
 pymavlink、pyserial、NumPy 和 PyYAML 由安装脚本通过 Python 包索引安装，
 不作为第三方源码复制到本项目。
 

@@ -12,11 +12,11 @@
 | `scripts/` | 跨模块校验、隐私审计和源码导出 | `verify_release.sh` |
 | `docs/` | 安装、操作、资源、航线与发布说明 | 下列文档索引 |
 
-三个模块分别管理源码、配置、依赖和测试。生成的日志、虚拟环境、模型和训练数据不进入公开源码。
+三个模块分别管理源码、配置、依赖和测试。生成的日志、虚拟环境和训练数据不进入公开源码；两套经过审核的运行权重归档例外。
 
 ## 使用前须知
 
-公开包提供原创代码、配置示例、测试和有明确许可的上游仿真资产。竞赛靶标图片、衍生数据和已有 YOLO 权重的再分发授权尚未确认，当前发布不包含这些资源，也不提供对应的 Release 附件。完整视觉仿真需要使用者自行准备有权使用的素材和模型，详见[资源与许可](docs/资源与许可.md)。
+公开包提供原创代码、配置示例、测试、有明确许可的上游仿真资产和两套运行用 YOLO 权重归档。竞赛靶标图片、衍生数据和训练记录仍不随源码发布，完整视觉仿真还需要使用者按[资源与许可](docs/资源与许可.md)准备靶标图片。
 
 A/B 示例航线已迁移至 ArduPilot 的公开 SITL 原点，保留局部航线形状、相对高度和任务命令。文件名 `official_route_a/b.waypoints` 为兼容原有入口保留，不表示其中包含真实比赛场地位置。
 
@@ -24,7 +24,7 @@ A/B 示例航线已迁移至 ArduPilot 的公开 SITL 原点，保留局部航�
 
 ## 安装与运行
 
-图形仿真的适配环境为 Ubuntu 22.04 amd64、Python 3.10、ROS 2 Humble 和 Gazebo Garden 7.9.x。Python 完整依赖记录在 `gazebo_sim/requirements.lock.txt`，SITL 与插件提交固定在安装脚本中。
+图形仿真的适配环境为 Ubuntu 22.04 amd64、Python 3.10、ROS 2 Humble 和 Gazebo Garden 7.9.x。Python 完整依赖记录在 `gazebo_sim/requirements.lock.txt`，SITL 与插件提交固定在安装脚本中。脚本按自身文件位置定位仓库，因此可以从任意当前目录调用。
 
 在仓库根目录执行：
 
@@ -32,13 +32,22 @@ A/B 示例航线已迁移至 ArduPilot 的公开 SITL 原点，保留局部航�
 # 安装系统依赖，需要管理员权限
 sudo ./gazebo_sim/scripts/install_system_deps.sh
 
-# 按资源说明准备本地靶标和模型，再执行校验与构建
+# 完整视觉模式：先按资源说明准备本地靶标，再执行校验与构建
 python3 scripts/check_local_resources.py --project gazebo_sim --require
 ./gazebo_sim/scripts/bootstrap.sh
 
 # 默认显示 Gazebo 和视觉窗口；A、B 分别启动
 ./gazebo_sim/scripts/run_sim.sh --official-route A
 ```
+
+公开源码不包含尚未确认再分发许可的靶标图片，但包含两套经过审核的 `.pt.gz` 运行权重。安装脚本会校验归档并解压到本地；若只是要在干净下载上验证 Gazebo、ArduPlane、MAVLink 和场景生成，可以先运行无视觉模式：
+
+```bash
+./gazebo_sim/scripts/bootstrap.sh --no-vision
+CUADC_HEADLESS=1 ./gazebo_sim/scripts/run_sim.sh --no-vision --seed 1
+```
+
+这个模式会用无纹理白板生成可加载的场景，不启动 YOLO，也不代表识别或完整飞行验收通过。准备好有权使用的靶标图片后，去掉 `--no-vision`，脚本会在启动前校验图片和模型的 SHA-256。
 
 Mission Planner 选择 UDP 14550，载入并上传对应的 A/B 航线。任务控制、起飞和航线执行方法见[操作文档](docs/操作文档.md)。结束测试时，在启动终端按 `Ctrl+C`，由 supervisor 关闭本次启动的进程。
 
@@ -67,4 +76,4 @@ CUADC_SKIP_SDF=1 ./scripts/verify_release.sh
 
 ## 许可证
 
-原创代码采用 MIT。第三方模型、网格、贴图和依赖适用各自许可证；详见各模块的 `THIRD_PARTY_NOTICES.md` 与 `LICENSES/`。本仓库的 MIT 许可不授予竞赛图案、训练数据或第三方权重的再分发权。
+原创代码和项目运行权重按仓库许可发布；第三方模型、网格、贴图和依赖适用各自许可证；详见各模块的 `THIRD_PARTY_NOTICES.md` 与 `LICENSES/`。本仓库的许可不授予竞赛图案、训练数据或第三方权重的再分发权。

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gzip
 import hashlib
 import math
 from pathlib import Path
@@ -90,6 +91,16 @@ def test_resources_are_optional_only_when_the_entire_group_is_absent(tmp_path):
     assert not check_manifest(tmp_path, manifest, required=True)
     (tmp_path / "two.dat").write_bytes(b"corrupt")
     assert len(check_manifest(tmp_path, manifest)) == 1
+
+
+def test_model_manifest_accepts_a_verified_compressed_archive(tmp_path):
+    payload = b"model bytes"
+    (tmp_path / "task1_v4m_best.pt.gz").write_bytes(gzip.compress(payload))
+    manifest = tmp_path / "MODEL_SHA256SUMS"
+    manifest.write_text(
+        f"{hashlib.sha256(payload).hexdigest()}  task1_v4m_best.pt\n"
+    )
+    assert not check_manifest(tmp_path, manifest, required=True)
 
 
 @pytest.mark.parametrize("body", ["", "malformed", "0 " + "../private.dat", "0" * 64 + "  /tmp/private.dat"])

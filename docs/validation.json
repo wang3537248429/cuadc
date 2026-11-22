@@ -8,18 +8,18 @@
     "ros": "Humble"
   },
   "local_workspace_tests": {
-    "tests": 323,
+    "tests": 327,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "passed": 323
+    "passed": 327
   },
   "clean_export_fresh_venv_tests": {
-    "tests": 323,
+    "tests": 327,
     "failures": 0,
     "errors": 0,
     "skipped": 20,
-    "passed": 303
+    "passed": 307
   },
   "clean_export_installation": {
     "fresh_venv": true,
@@ -34,9 +34,11 @@
     "upstream_assets": true,
     "local_runtime_resources": true,
     "public_privacy_findings": 0,
+    "public_runtime_weight_archives": 4,
     "required_resources_rejected_when_absent": true,
     "documentation_links": true,
-    "documentation_embedded_images": 0
+    "documentation_embedded_images": 0,
+    "clean_export_no_vision_world": true
   },
   "route_migration": {
     "origin": "public ArduPilot SITL origin",

@@ -26,3 +26,5 @@ python3 scripts/build_release_packages.py public
 ```
 
 导出命令拒绝覆盖已有目录。需再次构建时指定新的目录名，或保存旧产物后移走旧目录。发布操作与可用资源范围见[开源发布说明](../docs/开源发布说明.md)。
+
+新下载的仓库可先执行 `./gazebo_sim/scripts/bootstrap.sh --no-vision` 和 `CUADC_HEADLESS=1 ./gazebo_sim/scripts/run_sim.sh --no-vision --seed 1` 验证基础仿真；完整视觉运行仍按资源说明准备本地图片与模型。

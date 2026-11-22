@@ -50,7 +50,7 @@ Copyright (c) 2026 CUADC Vision Contributors
 
 ## YOLO、Ultralytics 与 Python 依赖
 
-当前公开源码不分发 YOLO 权重、训练记录或由竞赛图案派生的数据集。训练工具保留在 `tools/vision_training/`，其代码许可不自动覆盖输入素材或输出权重。
+当前公开源码分发两套项目运行权重归档；训练记录和由竞赛图案派生的数据集仍不分发。训练工具保留在 `tools/vision_training/`，其代码许可不自动覆盖输入素材或输出权重。
 
 Ultralytics、PyTorch、OpenCV、PySide6、MAVProxy、pymavlink、NumPy、PyYAML 和 pytest 通过包索引安装，不作为第三方源码复制到仓库。版本见 `pyproject.toml` 与 `requirements.lock.txt`。Ultralytics 8.4.106 包元数据标注 AGPL-3.0；使用、修改和分发时应遵守对应条款，项目 MIT 许可不替代这些义务。AGPL 全文见 [`LICENSES/AGPL-3.0.txt`](LICENSES/AGPL-3.0.txt)。
 
@@ -63,4 +63,4 @@ Gazebo Garden、ROS 2 Humble 和 ROS/Gazebo 桥通过系统软件源安装，不
 ## 竞赛规则与识别素材
 
 官方竞赛规则 PDF 不随仓库分发；项目仅记录规则版本并实现仿真侧的验收代理。
-目标图像、训练样本和已有视觉权重的再分发许可尚未确认，当前源码和 Release 附件均不包含这些资源。发布者自行提供替代资源时，应保留来源、许可和修改记录。
+目标图像和训练样本的再分发许可尚未确认，当前源码和 Release 附件不包含这些资源。公开的运行权重由项目发布者提供；替换权重时应保留来源、许可和修改记录。

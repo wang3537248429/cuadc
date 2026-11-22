@@ -1,0 +1,10 @@
+# Base runtime dependencies for the --no-vision simulator mode.
+# Vision packages are intentionally kept in requirements.txt because the
+# no-vision mode does not need the heavy inference runtime.
+future==1.0.0
+MAVProxy==1.8.74
+numpy==1.26.4
+opencv-python==4.11.0.86
+pymavlink==2.4.49
+PyYAML==6.0.3
+setuptools==80.9.0

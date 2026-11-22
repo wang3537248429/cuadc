@@ -23,6 +23,13 @@ EXCLUDED_SUFFIXES = {
     ".log", ".tlog", ".raw", ".ulg", ".bag", ".mp4", ".mov", ".avi",
     ".bin", ".tmp", ".bak", ".swp", ".swo", ".cache",
 }
+# These are the two runtime checkpoints explicitly approved for publication.
+# Keep the training-only pretraining archive and any newly added weights out of
+# a release until their provenance has been reviewed.
+PUBLIC_MODEL_ARCHIVES = {
+    "task1_v4m_best.pt.gz",
+    "task2_sim_digits_v1.pt.gz",
+}
 # 数据和样例的再分发许可尚未确认，只发布目录说明。
 DATASET_ROOT = "datasets"
 DATASET_KEEP = {"README.md"}
@@ -42,7 +49,8 @@ def restricted_resource(path: Path) -> bool:
     if "vision" in parts and "models" in parts:
         tail = parts[parts.index("vision") + 1:]
         return bool(tail) and tail not in {
-            ("MODEL_SHA256SUMS",), ("ARCHIVE_SHA256SUMS",), ("README.md",)}
+            ("MODEL_SHA256SUMS",), ("ARCHIVE_SHA256SUMS",), ("README.md",),
+        } and not (len(tail) == 1 and tail[0] in PUBLIC_MODEL_ARCHIVES)
     return False
 
 
@@ -69,8 +77,11 @@ def excluded(path: Path) -> bool:
         return True
     if path.suffix.lower() in EXCLUDED_SUFFIXES:
         return True
-    # 权重及其压缩副本均不进入公开源码或本次发布附件。
-    if path.name.endswith((".pt.gz", ".onnx.gz")):
+    # Only the explicitly reviewed runtime model archives enter a release.
+    if (
+        path.name.endswith((".pt.gz", ".onnx.gz"))
+        and path.name not in PUBLIC_MODEL_ARCHIVES
+    ):
         return True
     if path.name.endswith((".local.yaml", ".local.yml", ".local.json")) or path.name.startswith("core."):
         return True

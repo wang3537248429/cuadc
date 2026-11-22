@@ -13,6 +13,7 @@ from cuadc_sim.scenario import (
     validate_group,
     wind_vector,
     write_runtime,
+    wells_to_sdf,
 )
 from cuadc_sim.selection import Detection, select_target
 
@@ -105,6 +106,8 @@ def test_target_board_and_well_arrow_follow_task_orientation_rules():
 
 
 def test_world_writer_keeps_selected_group_and_uses_real_assets(tmp_path: Path):
+    if not (ROOT / "assets/targets/reference/task2").exists():
+        pytest.skip("源码包不分发靶标图案；此项需要本地素材包")
     parameters = SimParameters(task=2, group="B", seed=17, wind_speed_mps=6, wind_from_deg=90)
     scenario, world_path = write_runtime(parameters, runtime_dir=tmp_path)
     payload = json.loads((tmp_path / "scenario.json").read_text(encoding="utf-8"))
@@ -127,6 +130,16 @@ def test_world_writer_keeps_selected_group_and_uses_real_assets(tmp_path: Path):
         f"<force_approximation_scaling_factor>{GAZEBO_WIND_FORCE_SCALE:.6f}"
         "</force_approximation_scaling_factor>"
     ) in world
+
+
+def test_world_writer_has_a_loadable_untextured_fallback_without_private_assets(
+    tmp_path: Path,
+):
+    scenario = generate_scenario(SimParameters(task=2, seed=17))
+    world = wells_to_sdf(scenario, root=tmp_path)
+    assert "<visual name=\"target_surface\">" in world
+    assert "<albedo_map>" not in world
+    assert "<diffuse>1 1 1 1</diffuse>" in world
 
 
 def test_group_a_aircraft_starts_facing_north(tmp_path: Path):

@@ -1,10 +1,45 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+  cat <<'EOF'
+用法：bootstrap.sh [--no-vision]
+
+默认安装完整视觉仿真，并要求靶标图片已经准备好；运行权重归档随源码提供。
+--no-vision 只安装基础仿真依赖；适用于没有视觉资源的干净源码检出，
+            与 run_sim.sh --no-vision 配合使用。
+EOF
+}
+
+VISION_REQUIRED=1
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    --no-vision)
+      VISION_REQUIRED=0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      printf '[CUADC] 未知参数：%s\n' "$1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=layout.sh
 source "$script_dir/layout.sh"
 project_dir="$CUADC_PROJECT_DIR"
+
+python_major_minor="$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+if [[ "$python_major_minor" != "3.10" ]]; then
+  printf '[CUADC] 仿真环境需要 Python 3.10，当前为 %s。\n' "$python_major_minor" >&2
+  exit 1
+fi
 deps_dir="${project_dir}/.deps"
 ardupilot_dir="${deps_dir}/ardupilot"
 gazebo_plugin_dir="${deps_dir}/ardupilot_gazebo"
@@ -29,23 +64,36 @@ mkdir -p "$deps_dir" "$runtime_deps_dir" "${project_dir}/.runtime"
 )
 
 # Local weights require separate provenance; no automatic model downloads.
-if ! (
-  cd "$project_dir"
-  sha256sum --check models/vision/MODEL_SHA256SUMS >/dev/null 2>&1
-); then
-  if [[ -f "${project_dir}/models/vision/task1_v4m_best.pt.gz" ]]; then
+if [[ "$VISION_REQUIRED" == "1" ]]; then
+  if ! (
+    cd "$project_dir"
+    sha256sum --check models/vision/MODEL_SHA256SUMS >/dev/null 2>&1
+  ); then
+    missing_archives=()
+    for archive in task1_v4m_best.pt.gz task2_sim_digits_v1.pt.gz; do
+      [[ -f "${project_dir}/models/vision/$archive" ]] || missing_archives+=("$archive")
+    done
+    if [[ "${#missing_archives[@]}" -gt 0 ]]; then
+      printf '\n[CUADC] 缺少视觉模型归档；请确认公开权重文件没有被清理。\n' >&2
+      printf '[CUADC] 缺少模型归档：%s\n' "${missing_archives[*]}" >&2
+      printf '[CUADC] 请准备自有授权资源，或使用 bootstrap.sh --no-vision。\n' >&2
+      printf '[CUADC] 资源说明：docs/资源与许可.md\n\n' >&2
+      exit 1
+    fi
     gzip -d -k -f "${project_dir}/models/vision/task1_v4m_best.pt.gz"
     gzip -d -k -f "${project_dir}/models/vision/task2_sim_digits_v1.pt.gz"
-  else
-    printf '\n[CUADC] 源码不分发授权未确认的模型和靶标；请先配置自有资源。\n' >&2
-    printf '[CUADC] 操作说明见 docs/资源与许可.md 和 gazebo_sim/models/vision/README.md。\n\n' >&2
-    exit 1
   fi
+  (
+    cd "$project_dir"
+    sha256sum --check models/vision/MODEL_SHA256SUMS
+  )
+  if [[ -f "$project_dir/../scripts/check_local_resources.py" ]]; then
+    python3 "$project_dir/../scripts/check_local_resources.py" \
+      --project gazebo_sim --require
+  fi
+else
+  printf '[CUADC] --no-vision：跳过本地模型校验和视觉依赖。\n'
 fi
-(
-  cd "$project_dir"
-  sha256sum --check models/vision/MODEL_SHA256SUMS
-)
 
 ardupilot_ready=0
 if [[ -x "${ardupilot_runtime_dir}/arduplane" ]] \
@@ -136,8 +184,17 @@ python3 -m venv "${project_dir}/.venv"
   --upgrade "pip==26.1.2" "setuptools==80.9.0" "wheel==0.46.3"
 (
   cd "$project_dir"
-  "${project_dir}/.venv/bin/python" -m pip install \
-    --requirement "$CUADC_SIM_REQUIREMENTS"
+  if [[ "$VISION_REQUIRED" == "1" ]]; then
+    "${project_dir}/.venv/bin/python" -m pip install \
+      --requirement "$CUADC_SIM_REQUIREMENTS"
+  else
+    # Avoid installing torch/Ultralytics when the caller explicitly selected
+    # the no-vision mode.  Keep this list in a normal requirements file so it
+    # can be inspected and reproduced independently.
+    "${project_dir}/.venv/bin/python" -m pip install \
+      --requirement "$project_dir/requirements-core.txt" \
+      -e .
+  fi
 )
 
 cmake -S "$CUADC_GAZEBO_DIR/plugins" \

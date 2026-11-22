@@ -98,11 +98,9 @@ def export_directory(kind: str, destination: Path, *, link_dataset_files: bool =
         raise FileExistsError(f"输出目录已存在：{destination}")
     if destination.is_relative_to(ROOT) and not excluded(destination.relative_to(ROOT)):
         raise ValueError("工作区内的发布输出必须放在 dist 等被排除的目录")
-    # ``audit`` also returns local model archives so their pickle metadata can
-    # be inspected before a release.  Those archives are deliberately outside
-    # the source-package allowlist: uncleared models must stay local. Rebuild the copy list from
-    # ``public_files`` after the audit so a local, ignored weight can never be
-    # included accidentally.
+    # ``audit`` also inspects model archives so their pickle metadata can be
+    # checked before a release. Rebuild the copy list from ``public_files``
+    # after the audit so an unreviewed local weight can never be included.
     _, findings = audit(source, workspace=kind == "public")
     files = public_files(source, workspace=kind == "public")
     if findings:
@@ -135,9 +133,9 @@ def build(kind: str, output_dir: Path, include_wheelhouse: bool = False) -> Path
     if include_wheelhouse:
         raise ValueError("公开源码包不包含本地 wheelhouse")
     source = PROJECT_DIRS[kind]
-    # Keep auditing ignored weight archives for metadata leaks, but export only
-    # the public allowlist.  ``audit`` intentionally has a larger inspection
-    # set than ``public_files`` for this purpose.
+    # Keep auditing model archives for metadata leaks, but export only the
+    # explicit public allowlist. ``audit`` intentionally has a larger
+    # inspection set than ``public_files`` for this purpose.
     _, findings = audit(source, workspace=kind == "public")
     files = public_files(source, workspace=kind == "public")
     if findings:

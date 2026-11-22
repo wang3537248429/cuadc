@@ -243,10 +243,20 @@ def _target_outline_sdf(team_color: str) -> str:
     return "".join(parts)
 
 
-def _target_board_sdf(asset: str, rotation_deg: float) -> str:
+def _target_board_sdf(asset: str | None, rotation_deg: float) -> str:
     """Place a centered 600 mm panel, independently of the well heading."""
     # Use the original black/white reference panel with full UV coverage.
     # No crop, geometry or color is derived from the old blue composite image.
+    surface_material = (
+        f"""<material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse>
+          <specular>0.04 0.04 0.04 1</specular>
+          <pbr><metal><roughness>0.86</roughness><metalness>0</metalness></metal></pbr>
+        </material>"""
+        if asset is None
+        else f"""<material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.04 0.04 0.04 1</specular>
+          <pbr><metal><albedo_map>{asset}</albedo_map><roughness>0.86</roughness><metalness>0</metalness></metal></pbr>
+        </material>"""
+    )
     return f"""
     <link name="target_board">
       <pose degrees="true">0 0 0 0 0 {rotation_deg:.4f}</pose>
@@ -262,9 +272,7 @@ def _target_board_sdf(asset: str, rotation_deg: float) -> str:
       <visual name="target_surface">
         <pose>0 0 {FLOOR_THICKNESS_M + 0.004:.3f} 0 0 0</pose>
         <geometry><plane><normal>0 0 1</normal><size>0.600 0.600</size></plane></geometry>
-        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.04 0.04 0.04 1</specular>
-          <pbr><metal><albedo_map>{asset}</albedo_map><roughness>0.86</roughness><metalness>0</metalness></metal></pbr>
-        </material>
+        {surface_material}
       </visual>
     </link>"""
 
@@ -277,7 +285,16 @@ def wells_to_sdf(scenario: Scenario, root: Path = ROOT) -> str:
             # Gazebo world: +X north, +Y west, +Z up.
             # Runtime worlds may live on another filesystem (for example RAM).
             # Resolve textures from the project, never from the world's parent.
-            asset = escape(str((root / well.asset).resolve()))
+            asset_path = root / well.asset
+            # A clean public checkout intentionally has no competition target
+            # images.  Keep the generated world loadable in --no-vision mode
+            # by rendering an untextured white board; full mode still rejects
+            # missing resources before startup.
+            asset = (
+                escape(str(asset_path.resolve()))
+                if asset_path.is_file()
+                else None
+            )
             board = _target_board_sdf(asset, well.rotation_deg) if well.occupied else ""
             chunks.append(f"""
     <model name="{well.id}">

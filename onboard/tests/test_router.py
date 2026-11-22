@@ -12,6 +12,15 @@ from pathlib import Path
 from cuadc_onboard.config import OnboardConfig, RuntimeConfig
 from cuadc_onboard.router import MavlinkRouter
 from pymavlink import mavutil
+import pytest
+
+
+def open_pty_or_skip() -> tuple[int, int]:
+    """串口路由测试需要一对伪终端；受限容器通常未暴露 /dev/pts。"""
+    try:
+        return pty.openpty()
+    except OSError as error:
+        pytest.skip(f"当前环境无法分配伪终端，跳过串口路由测试：{error}")
 
 
 def reserve_udp_port() -> int:
@@ -57,7 +66,7 @@ def recv_udp_stream(
 
 
 def test_router_keeps_serial_single_owner_and_routes_companion_over_usb(tmp_path: Path):
-    master_fd, slave_fd = pty.openpty()
+    master_fd, slave_fd = open_pty_or_skip()
     slave_path = os.ttyname(slave_fd)
     companion = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     companion.settimeout(2.0)
@@ -111,7 +120,7 @@ def test_router_keeps_serial_single_owner_and_routes_companion_over_usb(tmp_path
 
 
 def test_router_blocks_external_prearm_check_commands_from_companion(tmp_path: Path):
-    master_fd, slave_fd = pty.openpty()
+    master_fd, slave_fd = open_pty_or_skip()
     slave_path = os.ttyname(slave_fd)
     companion = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     companion_port = reserve_udp_port()

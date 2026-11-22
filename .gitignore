@@ -62,6 +62,11 @@ desktop.ini
 yolov8*.pt
 models/onboard/
 models/vision/*_ncnn_model/
+# The two reviewed runtime archives are distributed with the source release.
+!gazebo_sim/models/vision/task1_v4m_best.pt.gz
+!gazebo_sim/models/vision/task2_sim_digits_v1.pt.gz
+!onboard/models/vision/task1_v4m_best.pt.gz
+!onboard/models/vision/task2_sim_digits_v1.pt.gz
 
 # === Misc ===
 *.tmp

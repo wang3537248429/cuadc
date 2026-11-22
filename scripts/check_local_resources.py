@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 from pathlib import Path
 import re
@@ -34,9 +35,38 @@ def check_manifest(project: Path, manifest: Path, *, required: bool = False) -> 
         return []
     errors = []
     for digest, path in entries:
-        if not path.is_file():
-            errors.append(f"缺少资源：{path.relative_to(project)}")
-        elif hashlib.sha256(path.read_bytes()).hexdigest() != digest.lower():
+        if path.is_file():
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        else:
+            # Public releases may carry the model as a gzip archive to keep
+            # the repository smaller.  Verify the decompressed bytes against
+            # MODEL_SHA256SUMS without creating a mutable runtime file.
+            archive = path.with_name(path.name + ".gz")
+            if path.suffix == ".pt" and archive.is_file():
+                if archive.is_symlink() or not archive.resolve().is_relative_to(
+                    project.resolve()
+                ):
+                    errors.append("资源清单包含不安全的路径")
+                    continue
+                digest_stream = hashlib.sha256()
+                try:
+                    with gzip.open(archive, "rb") as stream:
+                        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                            digest_stream.update(chunk)
+                    actual = digest_stream.hexdigest()
+                except OSError:
+                    actual = ""
+            else:
+                if path.suffix == ".pt":
+                    errors.append(
+                        "缺少资源："
+                        f"{path.relative_to(project)} 或 "
+                        f"{archive.relative_to(project)}"
+                    )
+                else:
+                    errors.append(f"缺少资源：{path.relative_to(project)}")
+                continue
+        if actual != digest.lower():
             errors.append(f"资源校验失败：{path.relative_to(project)}")
     return errors
 
@@ -60,7 +90,7 @@ def main() -> int:
     if errors:
         print("[资源] 请配置自行取得合法使用权的素材和模型；见 docs/资源与许可.md。")
     else:
-        print("[资源] 校验通过；未随源码提供的资源不计为识别或飞行验收。")
+        print("[资源] 校验通过；未随源码提供的靶标素材不计为识别或飞行验收。")
     return int(bool(errors))
 
 

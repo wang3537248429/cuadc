@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+import os
 import subprocess
+import sys
 import tarfile
 
 from scripts.build_release_packages import build, ignored, main, export_directory
@@ -39,6 +41,8 @@ def test_each_project_owns_its_runtime_resources():
     for project in (ROOT / "gazebo_sim", ROOT / "onboard"):
         assert (project / "assets/targets/catalog.json").is_file()
         assert (project / "models/vision/MODEL_SHA256SUMS").is_file()
+        for task in ("task1_v4m_best", "task2_sim_digits_v1"):
+            assert (project / f"models/vision/{task}.pt.gz").is_file()
     assert (ROOT / "gazebo_sim/config/ardupilot/plane.parm").is_file()
     assert (ROOT / "gazebo_sim/worlds/cuadc_world.sdf.in").is_file()
     assert (ROOT / "onboard/config/onboard.yaml").is_file()
@@ -107,11 +111,11 @@ def test_release_archives_remain_strictly_separated(tmp_path: Path):
         for parts in simulation_names
         if parts
     )
-    # Local archives are inspected but never distributed with this release.
-    assert not any(Path(parts[-1]).name.endswith((".pt.gz", ".onnx.gz"))
-                   for parts in simulation_names if parts)
-    assert not any(Path(parts[-1]).name.endswith((".pt.gz", ".onnx.gz"))
-                   for parts in onboard_names if parts)
+    assert ("models", "vision", "task1_v4m_best.pt.gz") in simulation_names
+    assert ("models", "vision", "task2_sim_digits_v1.pt.gz") in simulation_names
+    assert ("models", "vision", "task1_v4m_best.pt.gz") in onboard_names
+    assert ("models", "vision", "task2_sim_digits_v1.pt.gz") in onboard_names
+    assert not any("yolov8n_pretraining.pt.gz" in parts for parts in simulation_names)
     assert not any("sichuan" in part.lower() for parts in simulation_names for part in parts)
     assert ("README.md",) in onboard_names
     assert ("tests", "test_onboard.py") in onboard_names
@@ -156,16 +160,55 @@ def test_directory_export_is_regular_audited_and_refuses_overwrite(tmp_path, mon
         export_directory('simulation',result)
 
 
-def test_public_directory_export_omits_compressed_model_archives(tmp_path: Path):
-    """Uncleared models, artwork and derived data must stay outside exports."""
+def test_public_directory_export_includes_reviewed_model_archives_only(tmp_path: Path):
+    """Only the two reviewed runtime models enter a public export."""
     result = export_directory("public", tmp_path / "cuadc-source")
-    assert not list(result.rglob("*.pt.gz"))
+    assert sorted(path.name for path in result.rglob("*.pt.gz")) == sorted(
+        [
+            "task1_v4m_best.pt.gz",
+            "task2_sim_digits_v1.pt.gz",
+            "task1_v4m_best.pt.gz",
+            "task2_sim_digits_v1.pt.gz",
+        ]
+    )
+    assert not list(result.rglob("yolov8n_pretraining.pt.gz"))
     assert not list(result.rglob("*.onnx.gz"))
     assert (result / "gazebo_sim/pyproject.toml").is_file()
     assert (result / "onboard/pyproject.toml").is_file()
     assert not list((result / "gazebo_sim/assets/targets").rglob("*.png"))
     assert not (result / "gazebo_sim/datasets/samples").exists()
     assert not (result / "gazebo_sim/models/vision/training").exists()
+
+
+def test_public_export_runs_from_outside_checkout_without_private_assets(tmp_path: Path):
+    result = export_directory("public", tmp_path / "cuadc-source")
+    runtime = tmp_path / "runtime"
+    environment = {
+        **os.environ,
+        "PYTHONPATH": str(result / "gazebo_sim/src"),
+        "CUADC_RUNTIME_DIR": str(runtime),
+    }
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "cuadc_sim.cli",
+            "generate-world",
+            "--task",
+            "2",
+            "--seed",
+            "1",
+        ],
+        cwd=tmp_path,
+        env=environment,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert '"world"' in completed.stdout
+    world = (runtime / "cuadc_world.sdf").read_text(encoding="utf-8")
+    assert world.count('<visual name="target_surface">') == 6
+    assert world.count("<albedo_map>") < 6
 
 
 def test_onboard_one_command_deployer_has_valid_shell_syntax():
@@ -175,6 +218,16 @@ def test_onboard_one_command_deployer_has_valid_shell_syntax():
     assert '"$SCRIPT_DIR/install_onboard.sh"' in source
     assert '"$SCRIPT_DIR/install_onboard_service.sh"' in source
     assert "systemctl restart cuadc-onboard.target" in source
+
+
+def test_clean_checkout_has_a_documented_no_vision_simulator_path():
+    bootstrap = ROOT / "gazebo_sim/scripts/bootstrap.sh"
+    runner = ROOT / "gazebo_sim/scripts/run_sim.sh"
+    subprocess.run(["bash", "-n", str(bootstrap)], check=True)
+    subprocess.run(["bash", "-n", str(runner)], check=True)
+    assert "--no-vision" in bootstrap.read_text(encoding="utf-8")
+    assert "--no-vision" in runner.read_text(encoding="utf-8")
+    assert (ROOT / "gazebo_sim/requirements-core.txt").is_file()
 
 
 def test_onboard_systemd_runs_hardware_preflight_before_algorithm():

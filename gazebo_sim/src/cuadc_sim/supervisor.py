@@ -38,8 +38,10 @@ ARDUPILOT_GAZEBO_RUNTIME = ROOT / ".deps/runtime/ardupilot-gazebo-garden"
 class ProcessSupervisor:
     def __init__(self, headless: bool = False, seed: int | None = None,
                  gcs_host: str = '127.0.0.1', official_route: str | None = None,
-                 preserve_uploaded_route: bool = False):
+                 preserve_uploaded_route: bool = False,
+                 vision: bool = True):
         self.headless = headless
+        self.vision_enabled = vision
         self.gcs_host=str(ipaddress.IPv4Address(gcs_host))
         self.official_route = official_route.upper() if official_route else None
         if self.official_route:
@@ -225,15 +227,21 @@ class ProcessSupervisor:
             "/cuadc/airframe/touchdown@std_msgs/msg/String[gz.msgs.StringMsg",
         ]
         self._start("bridge", bridge_command)
-        vision_command = [
-            str(self.runtime_python),
-            "-m",
-            "cuadc_sim.cli",
-            "vision",
-        ]
-        if self.headless:
-            vision_command.append("--headless")
-        self._start("vision", vision_command)
+        if self.vision_enabled:
+            vision_command = [
+                str(self.runtime_python),
+                "-m",
+                "cuadc_sim.cli",
+                "vision",
+            ]
+            if self.headless:
+                vision_command.append("--headless")
+            self._start("vision", vision_command)
+        else:
+            print(
+                "[CUADC] --no-vision：未启动 YOLO 视觉服务；相机画面仍由 Gazebo 发布。",
+                flush=True,
+            )
 
     def stop_gazebo_side(self) -> None:
         self._stop("vision")
@@ -448,6 +456,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="保留地面站上传的航点，不启用动态攻击段替换",
     )
+    parser.add_argument(
+        "--no-vision",
+        action="store_true",
+        help="不启动 YOLO 服务；用于没有本地模型/靶标资源的基础仿真",
+    )
     args = parser.parse_args(argv)
     supervisor = ProcessSupervisor(
         headless=args.headless,
@@ -455,6 +468,7 @@ def main(argv: list[str] | None = None) -> int:
         gcs_host=args.gcs_host,
         official_route=args.official_route,
         preserve_uploaded_route=args.preserve_uploaded_route,
+        vision=not args.no_vision,
     )
     signal.signal(signal.SIGINT, supervisor.shutdown)
     signal.signal(signal.SIGTERM, supervisor.shutdown)

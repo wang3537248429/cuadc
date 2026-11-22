@@ -31,6 +31,11 @@ if [[ "${ID:-}" != "ubuntu" || "${VERSION_ID:-}" != "22.04" ]]; then
   printf '[CUADC] 需要 Ubuntu 22.04，当前为 %s %s。\n' "${ID:-unknown}" "${VERSION_ID:-unknown}" >&2
   exit 1
 fi
+python_major_minor="$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+if [[ "$python_major_minor" != "3.10" ]]; then
+  printf '[CUADC] 机载依赖锁定 Python 3.10，当前为 %s。\n' "$python_major_minor" >&2
+  exit 1
+fi
 
 if [[ "$OFFLINE" -eq 0 ]]; then
   sudo apt-get update
@@ -72,6 +77,16 @@ fi
 "$ONBOARD_VENV/bin/python" -m pip install --no-deps -e "$PROJECT_DIR"
 
 if ! (cd "$PROJECT_DIR" && sha256sum --status --check models/vision/MODEL_SHA256SUMS); then
+  missing_archives=()
+  for archive in task1_v4m_best.pt.gz task2_sim_digits_v1.pt.gz; do
+    [[ -f "$PROJECT_DIR/models/vision/$archive" ]] || missing_archives+=("$archive")
+  done
+  if [[ "${#missing_archives[@]}" -gt 0 ]]; then
+    printf '[CUADC] 缺少视觉模型；公开源码不附带这些文件。\n' >&2
+    printf '[CUADC] 请先准备：%s\n' "${missing_archives[*]}" >&2
+    printf '[CUADC] 资源说明见 %s/models/vision/README.md。\n' "$PROJECT_DIR" >&2
+    exit 1
+  fi
   TASK1_TEMP="$(mktemp "$PROJECT_DIR/models/vision/.task1.XXXXXX.pt")"
   TASK2_TEMP="$(mktemp "$PROJECT_DIR/models/vision/.task2.XXXXXX.pt")"
   cleanup_models() {

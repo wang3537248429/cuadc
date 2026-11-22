@@ -166,9 +166,9 @@ def scan_jpeg_comments(data: bytes, label: str) -> list[str]:
 
 def audit(source: Path, *, workspace: bool = False) -> tuple[list[Path], list[str]]:
     files = public_files(source, workspace=workspace)
-    # ``release_policy`` deliberately excludes compressed model archives from
-    # packages, but those files still need the same metadata review when they
-    # are present in a working tree.  Likewise, dotenv files must be surfaced
+    # Compressed model archives are reviewed as data even when policy excludes
+    # them; the approved runtime archives are also public files. Likewise,
+    # dotenv files must be surfaced
     # as findings instead of being silently skipped as hidden files.  Walk the
     # same published roots while pruning excluded directories so this extra
     # audit set cannot inspect unrelated local caches.
