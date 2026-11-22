@@ -1,7 +1,7 @@
 # Raspberry Pi 4B / Ubuntu 22.04 aarch64 companion-only dependencies.
 # Gazebo, ROS, Qt, MAVProxy and SITL are intentionally excluded.
 numpy==1.26.4
-opencv-python==4.11.0.86
+opencv-python==5.1.0.95
 pymavlink==2.4.49
 pyserial==3.5
 PyYAML==6.0.3
