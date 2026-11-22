@@ -1,4 +1,4 @@
-# CUADC
+# CUADC固定翼侦察与打击项目
 
 固定翼任务仿真、机载视觉程序与中文遥测监控工具。仿真由 Gazebo Garden 提供物理与相机画面，ArduPlane SITL 执行地面站上传的任务，YOLO 处理相机帧。
 
