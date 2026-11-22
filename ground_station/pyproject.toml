@@ -13,7 +13,7 @@ license-files = ["LICENSE"]
 dependencies = ["pymavlink==2.4.49", "pyserial==3.5"]
 
 [project.optional-dependencies]
-test = ["pytest==9.1.1"]
+test = ["pytest==9.2.0"]
 
 [project.scripts]
 cuadc-ground-station = "cuadc_ground_station.app:main"
