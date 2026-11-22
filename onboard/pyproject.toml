@@ -16,7 +16,7 @@ dependencies = [
   "pymavlink==2.4.49",
   "pyserial==3.5",
   "PyYAML==6.0.3",
-  "ultralytics==8.4.106",
+  "ultralytics==8.4.215",
 ]
 classifiers = [
   "Development Status :: 4 - Beta",

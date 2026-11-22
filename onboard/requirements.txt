@@ -7,4 +7,4 @@ pyserial==3.5
 PyYAML==6.0.3
 torch @ https://download.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl
 torchvision @ https://download.pytorch.org/whl/cpu/torchvision-0.28.0%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl
-ultralytics==8.4.106
+ultralytics==8.4.215
