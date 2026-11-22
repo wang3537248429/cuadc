@@ -18,11 +18,11 @@
 
 ## 使用前须知
 
-公开包提供原创代码、配置示例、测试、有明确许可的上游仿真资产和两套运行用 YOLO 权重归档。竞赛靶标图片、衍生数据和训练记录仍不随源码发布，完整视觉仿真还需要使用者按[资源与许可](docs/资源与许可.md)准备靶标图片。
+公开包提供原创代码、配置示例、测试、有明确许可的上游仿真资产和两套运行用 YOLO 权重归档。竞赛靶标图片、衍生数据和训练记录不随源码发布，完整视觉仿真需按[资源与许可](docs/资源与许可.md)自备靶标图片。
 
 A/B 示例航线已迁移至 ArduPilot 的公开 SITL 原点，保留局部航线形状、相对高度和任务命令。文件名 `official_route_a/b.waypoints` 为兼容原有入口保留，不表示其中包含真实比赛场地位置。
 
-源码测试、完整仿真和实机验收分别记录。源码检查通过不能代替 YOLO 识别、投水落点或实际飞行验收。
+源码测试、完整仿真和实机验收分别记录，源码检查通过不能代替识别、投水落点或实际飞行验收。
 
 ## 安装与运行
 
@@ -42,16 +42,14 @@ python3 scripts/check_local_resources.py --project gazebo_sim --require
 ./gazebo_sim/scripts/run_sim.sh --official-route A
 ```
 
-公开源码不包含尚未确认再分发许可的靶标图片，但包含两套经过审核的 `.pt.gz` 运行权重。安装脚本会校验归档并解压到本地；若只是要在干净下载上验证 Gazebo、ArduPlane、MAVLink 和场景生成，可以先运行无视觉模式：
+安装脚本会校验两套 `.pt.gz` 权重归档并解压到本地，启动前还会校验靶标图片和模型的 SHA-256。只想在干净下载上验证 Gazebo、ArduPlane、MAVLink 和场景生成时，可用无纹理白板场景，不启动 YOLO：
 
 ```bash
 ./gazebo_sim/scripts/bootstrap.sh --no-vision
 CUADC_HEADLESS=1 ./gazebo_sim/scripts/run_sim.sh --no-vision --seed 1
 ```
 
-这个模式会用无纹理白板生成可加载的场景，不启动 YOLO，也不代表识别或完整飞行验收通过。准备好有权使用的靶标图片后，去掉 `--no-vision`，脚本会在启动前校验图片和模型的 SHA-256。
-
-Mission Planner 选择 UDP 14550，载入并上传对应的 A/B 航线。任务控制、起飞和航线执行方法见[操作文档](docs/操作文档.md)。结束测试时，在启动终端按 `Ctrl+C`，由 supervisor 关闭本次启动的进程。
+Mission Planner 选择 UDP 14550，载入并上传对应的 A/B 航线。任务控制、起飞和航线执行见[操作文档](docs/操作文档.md)。结束测试时在启动终端按 `Ctrl+C`，由 supervisor 关闭本次启动的进程。
 
 ## 源码检查
 
