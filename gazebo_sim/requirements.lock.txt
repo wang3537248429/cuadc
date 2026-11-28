@@ -29,7 +29,7 @@ pluggy==1.6.0
 polars==1.43.0
 polars-runtime-32==1.43.0
 psutil==7.2.2
-Pygments==2.20.0
+Pygments==2.21.0
 pymavlink==2.4.49
 pynmeagps==1.1.5
 pyparsing==3.3.2
